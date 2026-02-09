@@ -1,11 +1,1151 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Flask App</title>
-  </head>
-  <body>
-    <h1>Flask app is running.</h1>
-  </body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
+    <title>Vidyarthi Mitra - Education & Career Guidance</title>
+    <meta property="og:url" content="https://vidyarthimitra.org/"/>
+    <meta property="og:title" content="Vidyarthi Mitra"/>
+    <meta property="og:description" content="India's Trusted Student Guidance Platform"/>
+    <meta property="og:image" content="{{ url_for('static', filename='logo.png') }}"/>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --orange: #ff6600;
+            --dark-blue: #003d6b;
+            --light-bg: #f5f5f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        
+        /* HEADER & NAVIGATION */
+        .topbar {
+            background: #3a3a3a;
+            color: #fff;
+            font-size: 13px;
+            padding: 8px 0;
+        }
+
+        .topbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 18px;
+            font-weight: 500;
+        }
+
+        .topbar a:hover {
+            color: #ffd28a;
+        }
+
+        .topbar .topbar-right {
+            text-align: right;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        header {
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e6e6e6;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+        
+        .navbar-default {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 0;
+            min-height: 62px;
+        }
+
+        .navbar-default .navbar-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 0;
+            flex-wrap: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .navbar-default .navbar-collapse {
+                display: flex !important;
+                justify-content: flex-end;
+                align-items: center;
+            }
+
+            .navbar-default .navbar-nav.navbar-right {
+                margin-right: 0;
+            }
+        }
+
+        .navbar-default .navbar-nav > li {
+            position: relative;
+            float: left;
+            display: inline-block;
+        }
+        
+        .navbar-default .navbar-nav > li > a {
+            color: #3b3b3b;
+            font-weight: 700;
+            padding: 20px 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navbar-default .navbar-nav > li > a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-default .navbar-nav > li > a:hover::before,
+        .navbar-default .navbar-nav > .active > a::before {
+            width: 100%;
+        }
+        
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: var(--orange);
+            background: transparent;
+        }
+        
+        .navbar-default .navbar-nav > .active > a,
+        .navbar-default .navbar-nav > .active > a:hover,
+        .navbar-default .navbar-nav > .active > a:focus {
+            color: var(--orange);
+            background: transparent;
+            font-weight: 700;
+        }
+
+        .navbar-default .navbar-nav > .active > a,
+        .navbar-default .navbar-nav > li > a:hover {
+            background-color: transparent !important;
+        }
+
+        .navbar-default .navbar-nav > li > a i {
+            font-size: 14px;
+        }
+        
+        .navbar-brand {
+            padding: 10px 15px;
+            height: 62px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand img {
+            height: 44px;
+            width: auto;
+            filter: none;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-header {
+            margin-right: 10px;
+        }
+
+        .navbar-default .navbar-collapse {
+            padding-right: 0;
+        }
+        
+        .badge-new {
+            background: #ffcc4d;
+            color: #111;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 700;
+            margin-left: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: none;
+            animation: none;
+        }
+        
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        
+        .navbar-toggle {
+            border: 2px solid var(--orange);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggle:hover {
+            background: var(--orange);
+        }
+        
+        .navbar-toggle .icon-bar {
+            background: var(--orange);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggle:hover .icon-bar {
+            background: white;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            height: 500px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+        }
+        
+        .hero-content h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .hero-buttons .btn {
+            margin: 5px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+        
+        /* ANNOUNCEMENTS */
+        .announcement-bar {
+            background: #fff3cd;
+            border-left: 4px solid var(--orange);
+            padding: 15px 20px;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .announcement-bar i {
+            color: var(--orange);
+            font-size: 24px;
+            margin-right: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .announcement-bar p {
+            display: inline;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        /* SECTIONS */
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .section-title .orange-text {
+            color: var(--orange);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 15px;
+            color: #777;
+            margin-bottom: 40px;
+        }
+        
+        /* FEATURED ALERTS */
+        .featured-section {
+            background: #f9f9f9;
+            padding: 50px 0;
+        }
+        
+        .alert-box {
+            background: white;
+            border-left: 3px solid var(--orange);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .alert-box:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(5px);
+        }
+        
+        .alert-box h5 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .alert-box small {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        /* TOP SEARCHES */
+        .top-searches {
+            background: linear-gradient(135deg, #003d6b 0%, #005a8d 100%);
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .search-item {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .search-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+        
+        .search-item a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .search-item i {
+            display: block;
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--orange);
+        }
+        
+        /* ABOUT SECTION */
+        .about-section {
+            padding: 60px 0;
+            background: white;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .about-text h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        /* CARDS & BOXES */
+        .info-box {
+            background: white;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            min-height: 220px;
+            border-top: 3px solid var(--orange);
+        }
+        
+        .info-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .info-box i {
+            font-size: 40px;
+            color: var(--orange);
+            margin-bottom: 15px;
+        }
+        
+        .info-box h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+        
+        .info-box p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* CTA BUTTONS */
+        .btn-primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #e55a00;
+            border-color: #e55a00;
+        }
+        
+        .btn-default {
+            background: white;
+            border-color: white;
+            color: var(--orange);
+        }
+        
+        .btn-default:hover {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+        
+        /* PARTNERS */
+        .partners-section {
+            padding: 50px 0;
+            background: #f9f9f9;
+        }
+        
+        .partner-logo-box {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .partner-logo-box img {
+            max-width: 120px;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .partner-logo-box:hover img {
+            transform: scale(1.05);
+            border-color: var(--orange);
+        }
+        
+        .partner-logo-box h5 {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* TESTIMONIALS */
+        .testimonial-section {
+            background: white;
+            padding: 60px 0;
+        }
+        
+        .testimonial-item {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--orange);
+            transition: all 0.3s;
+        }
+        
+        .testimonial-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid var(--orange);
+        }
+        
+        .testimonial-author h6 {
+            margin: 0;
+            font-weight: 700;
+            color: var(--orange);
+            font-size: 14px;
+        }
+        
+        .testimonial-author small {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .testimonial-text {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            line-height: 1.7;
+        }
+        
+        /* FOOTER */
+        footer {
+            background: #2f3f5f;
+            color: #c9d4e2;
+            padding: 50px 0 0;
+            position: relative;
+        }
+
+        footer .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        footer .row > [class*='col-'] {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes gradient-slide {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+        
+        .footer-widget {
+            margin-bottom: 35px;
+        }
+        
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo .orange-text {
+            color: var(--orange);
+        }
+        
+        .footer-widget h5 {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .footer-widget h5::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(243, 156, 18, 0.5);
+        }
+
+        .footer-accent {
+            color: #f39c12;
+        }
+        
+        .footer-widget ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-widget ul li {
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .footer-widget ul li a {
+            color: #c9d4e2;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .footer-widget ul li a:hover {
+            color: #f39c12;
+        }
+        
+        .footer-widget ul li a i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .footer-bottom {
+            background: #1f2738;
+            padding: 18px 0;
+            text-align: center;
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 30px;
+        }
+        
+        .footer-bottom a {
+            color: #f39c12;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-bottom a:hover {
+            color: #fff;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 28px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .info-box {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="/blog">Blog</a>
+                    <a href="/epaper">Epaper</a>
+                </div>
+                <div class="col-sm-6 topbar-right">विद्यार्थी मित्र</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER & NAVIGATION -->
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra">
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="/"><i class="fa fa-home"></i></a></li>
+                        <li><a href="/universities">Universities</a></li>
+                        <li><a href="/colleges">Colleges</a></li>
+                        <li><a href="/courses">Courses</a></li>
+                        <li><a href="/exams">Entrance Exams</a></li>
+                        <li><a href="/mock-exams">Mock Exams</a></li>
+                        <li><a href="/cutoffs">Cut-offs</a></li>
+                        <li><a href="/admissions">Admissions</a></li>
+                        <li><a href="/news">News</a></li>
+                        <li><a href="/epaper">Epaper<span class="badge-new">New</span></a></li>
+                        <li><a href="/guide">Guide Me</a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-search"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- HERO SECTION -->
+    <section class="hero" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ url_for('static', filename='IITDELHI.jpg') }}');">
+        <div class="hero-content">
+            <h1>DTE Option Form Filling Is Now Made EASY</h1>
+            <p>Enter SML & GET Best Colleges & Branches</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">PREDICT YOUR RANK</a>
+                <a href="#" class="btn btn-default">DOWNLOAD APP</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="container">
+        <div class="announcement-bar">
+            <i class="fa fa-bullhorn"></i>
+            <p><strong>Latest Update:</strong> DTE Admissions 2024-25 are now open. Apply before the deadline!</p>
+        </div>
+    </div>
+    
+    <!-- FEATURED ALERTS -->
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title"><span class="orange-text">FEATURED</span> ALERTS</h2>
+            <p class="section-subtitle">Latest News From Notice Board</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert-box">
+                        <h5><i class="fa fa-file-text-o"></i> MHT-CET 2024-25 Admission Process Started</h5>
+                        <small>Posted on: 2 days ago</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert-box">
+                        <h5><i class="fa fa-graduation-cap"></i> Engineering Cut-offs Released for Round 1</h5>
+                        <small>Posted on: 3 days ago</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert-box">
+                        <h5><i class="fa fa-calendar"></i> JEE Advanced 2025 Registration Open</h5>
+                        <small>Posted on: 5 days ago</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert-box">
+                        <h5><i class="fa fa-book"></i> NEET UG Counselling Schedule Announced</h5>
+                        <small>Posted on: 1 week ago</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- TOP SEARCHES -->
+    <section class="top-searches">
+        <div class="container">
+            <h2 class="section-title">TOP <span class="orange-text">SEARCHES</span></h2>
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="search-item">
+                        <i class="fa fa-graduation-cap"></i>
+                        <a href="#">DTE Admissions 2024-25</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="search-item">
+                        <i class="fa fa-mobile"></i>
+                        <a href="#">Download Cut-off App</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="search-item">
+                        <i class="fa fa-line-chart"></i>
+                        <a href="#">FYJC Rank Predictor</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="search-item">
+                        <i class="fa fa-pencil"></i>
+                        <a href="#">Mock Tests</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ABOUT SECTION -->
+    <section class="about-section">
+        <div class="container">
+            <h2 class="section-title">ABOUT <span class="orange-text">VIDYARTHI MITRA</span></h2>
+            <p class="section-subtitle">VidyarthiMitra.org is an extensive search engine for anyone who wants precise, authentic and up-to-date information on everything related to education & career.</p>
+            
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-university"></i>
+                        <h5>Universities</h5>
+                        <p>Information about top Universities recognized by the UGC that come under the categories: Govt, Private and Deemed.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-building"></i>
+                        <h5>Colleges</h5>
+                        <p>List and information about top colleges, recognized institutes and their courses along with their contact information.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-book"></i>
+                        <h5>Courses</h5>
+                        <p>Detailed information about Degree, Diploma & Masters and courses like Engineering, Management, Medical, Law, Architecture, Commerce, Arts, Agriculture, etc.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-pencil-square-o"></i>
+                        <h5>Entrance Exams</h5>
+                        <p>Up-to-date news and information about various Entrance Exams & notifications like alerts, deadlines, results & important dates.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-bell"></i>
+                        <h5>Admissions</h5>
+                        <p>Alerts for application dates, eligibility criteria and admission openings to various Universities, Colleges, Institutes and their courses and streams.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-users"></i>
+                        <h5>Expert Advise</h5>
+                        <p>Career Counselling on education in India & Abroad in person and also via E-mails, Telephonic Conversations, Video Calls, etc.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-trophy"></i>
+                        <h5>Scholarship</h5>
+                        <p>Scholarships to help students pursue their dreams and career by supporting their education cost on the basis of academics and other factors.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-laptop"></i>
+                        <h5>Mock Exams</h5>
+                        <p>Students can know where they stand by taking mock tests for JEE, CET, CAT, NEET, etc by scrutinizing Performance Graphs, Self-Analysis & Expert Recommendations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <i class="fa fa-file-text"></i>
+                        <h5>DTE</h5>
+                        <p>DTE & State CET Cell are Govt Agencies for Technical & Higher Education in Maharashtra. We ease admission process, by posting & explaining all recent updates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- PLACEMENT PARTNERS -->
+    <section class="partners-section">
+        <div class="container">
+            <h2 class="section-title">PLACEMENT <span class="orange-text">PARTNERS</span></h2>
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="partner-logo-box">
+                        <img src="{{ url_for('static', filename='COEP_Pune_logo.jpeg') }}" alt="COEP">
+                        <h5>COEP (PUNE)</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="partner-logo-box">
+                        <img src="{{ url_for('static', filename='IIIT PUNE.jpeg') }}" alt="IIIT Pune">
+                        <h5>IIIT (PUNE)</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="partner-logo-box">
+                        <img src="{{ url_for('static', filename='CDAC pune.jpeg') }}" alt="CDAC">
+                        <h5>CDAC (PUNE)</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="partner-logo-box">
+                        <img src="{{ url_for('static', filename='SITM PUNE.jpeg') }}" alt="SITM">
+                        <h5>SITM (PUNE)</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- TESTIMONIALS -->
+    <section class="testimonial-section">
+        <div class="container">
+            <h2 class="section-title">WORDS OF <span class="orange-text">GRATITUDE</span></h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="testimonial-item">
+                        <div class="testimonial-header">
+                            <img src="{{ url_for('static', filename='chaitanya.jpg') }}" class="testimonial-img" alt="Chaitanya">
+                            <div class="testimonial-author">
+                                <h6>Chaitanya Kulkarni</h6>
+                                <small>Automation Test Engineer</small>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Ravindra sir is chalta firta wikipedia regarding education and careers. I remember when having discussion with him that he has subscribed to 10-15 different newspapers daily. That answers to the source of rich database of his knowledge. Definitely students careers are in damn safe hands."</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="testimonial-item">
+                        <div class="testimonial-header">
+                            <img src="https://via.placeholder.com/60" class="testimonial-img" alt="Testimonial">
+                            <div class="testimonial-author">
+                                <h6>Gaurav Shervani</h6>
+                                <small>Senior Software Engineer</small>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Thank you for the help and support that you have given to the students applying to further studies. We particularly appreciate the time that you take to give potential students the best possible advice and the support you give them with respect to visa applications for abroad studies."</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="testimonial-item">
+                        <div class="testimonial-header">
+                            <img src="https://via.placeholder.com/60" class="testimonial-img" alt="Testimonial">
+                            <div class="testimonial-author">
+                                <h6>Shweta Nimse</h6>
+                                <small>Student</small>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Vidyarthimitra is a very informative portal. Where I got many information about different courses exams colleges and universities. I got my career path with the help of vidyarthimitra. I am very thankful to vidyarthimitra. I recommend this site to all students, parents and teachers for the career related information."</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="testimonial-item">
+                        <div class="testimonial-header">
+                            <img src="https://via.placeholder.com/60" class="testimonial-img" alt="Testimonial">
+                            <div class="testimonial-author">
+                                <h6>Kiran Kumar</h6>
+                                <small>Sr. Vice President</small>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"This website is Very informative for all the students and their parents to take accurate decision on choosing the best path for the career of the students. Very good initiative by Founder and members. Would recommend to my friends and colleagues."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="footer-widget">
+                        <div class="footer-logo">विद्यार्थी <span class="orange-text">मित्र</span></div>
+                        <p style="font-size: 12px; margin-top: 12px; line-height: 1.6;">India's leading educational web portal for universities, colleges, courses and entrance exams.</p>
+                        <h5>Quick <span class="footer-accent">Links</span></h5>
+                        <ul>
+                            <li><a href="/universities">Universities</a></li>
+                            <li><a href="/colleges">Colleges</a></li>
+                            <li><a href="/courses">Courses</a></li>
+                            <li><a href="/exams">Entrance Exams</a></li>
+                            <li><a href="/mock-exams">Mock Exams</a></li>
+                            <li><a href="/news">News</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-widget">
+                        <h5>Useful <span class="footer-accent">URLs</span></h5>
+                        <ul>
+                            <li><a href="#">Download App</a></li>
+                            <li><a href="/guide">Expert Advise</a></li>
+                            <li><a href="/feedback">Feedback</a></li>
+                            <li><a href="#">Sign In</a></li>
+                            <li><a href="#">Join Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-widget">
+                        <h5>Follow <span class="footer-accent">Us</span></h5>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i> Instagram</a></li>
+                            <li><a href="#"><i class="fa fa-whatsapp"></i> WhatsApp</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-widget">
+                        <h5>Entrance <span class="footer-accent">Exams</span></h5>
+                        <ul>
+                            <li><a href="#">MHT-CET</a></li>
+                            <li><a href="#">JEE Main</a></li>
+                            <li><a href="#">JEE Advanced</a></li>
+                            <li><a href="#">NEET UG</a></li>
+                            <li><a href="#">NEET PG</a></li>
+                            <li><a href="#">NDA</a></li>
+                            <li><a href="#">CLAT</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-widget">
+                        <h5>Our <span class="footer-accent">Products</span></h5>
+                        <ul>
+                            <li><a href="#">VidyarthiMitra.org</a></li>
+                            <li><a href="#">Epaper - Digital News</a></li>
+                            <li><a href="#">Career Assessment Test</a></li>
+                            <li><a href="#">DTE Cut-offs 2024-25</a></li>
+                            <li><a href="#">11th Cut-offs 2024-25</a></li>
+                            <li><a href="#">Govt. & Private Jobs</a></li>
+                            <li><a href="#">Practice Tests</a></li>
+                            <li><a href="#">Study Abroad</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-widget">
+                        <h5>Contact <span class="footer-accent">Us</span></h5>
+                        <ul>
+                            <li><a href="tel:+917720025900"><i class="fa fa-phone"></i> +91 7720025900</a></li>
+                            <li><a href="tel:+917720081400"><i class="fa fa-phone"></i> +91 7720081400</a></li>
+                            <li><a href="mailto:contact@vidyarthimitra.org"><i class="fa fa-envelope"></i> contact@vidyarthimitra.org</a></li>
+                            <li><a href="mailto:info@vidyarthimitra.org"><i class="fa fa-envelope"></i> info@vidyarthimitra.org</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 VidyarthiMitra.org - All Rights Reserved | 
+                    <a href="#">Terms and Conditions</a> | 
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">About Us</a> | 
+                    <a href="#">Contact Us</a> | 
+                    <a href="#">Join Us</a> | 
+                    <a href="#">Refund & Cancellation</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Mobile menu toggle
+            $(".navbar-toggle").click(function() {
+                $("#navbar").toggleClass("in");
+            });
+            
+            // Active nav link
+            $("a").each(function() {
+                if($(this).prop('href') == window.location.href) {
+                    $(this).parent().addClass("active");
+                }
+            });
+            
+            // Smooth scrolling
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $(this.getAttribute('href'));
+                if( target.length ) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 70
+                    }, 1000);
+                }
+            });
+            
+            // Navbar scroll effect
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 50) {
+                    $('header').addClass('scrolled');
+                } else {
+                    $('header').removeClass('scrolled');
+                }
+            });
+            
+            // Animate elements on scroll
+            function animateOnScroll() {
+                $('.info-box, .testimonial-item, .partner-logo-box').each(function() {
+                    var elementTop = $(this).offset().top;
+                    var windowBottom = $(window).scrollTop() + $(window).height();
+                    
+                    if (elementTop < windowBottom - 100) {
+                        $(this).css({
+                            'opacity': '1',
+                            'transform': 'translateY(0)'
+                        });
+                    }
+                });
+            }
+            
+            // Initialize animation states
+            $('.info-box, .testimonial-item, .partner-logo-box').css({
+                'opacity': '0',
+                'transform': 'translateY(30px)',
+                'transition': 'all 0.6s ease'
+            });
+            
+            $(window).on('scroll', animateOnScroll);
+            animateOnScroll(); // Run once on load
+        });
+    </script>
+</body>
 </html>
