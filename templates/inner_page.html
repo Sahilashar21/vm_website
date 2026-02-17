@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Vidyarthi Mitra - {{ section.title }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
+    <title>{{ section.title }} | Vidyarthi Mitra</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e85a27;
+            --secondary: #0f2f6d;
+            --text: #1e293b;
+            --muted: #64748b;
+            --bg-soft: #f8fafc;
+            --line: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: #fff;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .main-nav {
+            border-bottom: 1px solid var(--line);
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand img { height: 42px; }
+
+        .navbar-nav .nav-link {
+            color: var(--text);
+            font-weight: 600;
+            margin: 0 6px;
+            padding: 8px 10px !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--primary);
+        }
+
+        .page-hero {
+            min-height: 280px;
+            background: linear-gradient(135deg, rgba(15,47,109,.92), rgba(255,107,53,.76));
+            display: flex;
+            align-items: center;
+            color: #fff;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(1.8rem, 5.2vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .page-hero p {
+            max-width: 760px;
+            opacity: .96;
+            margin: 0;
+        }
+
+        .section-pad { padding: 64px 0; }
+
+        .card-soft {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+            padding: 18px;
+            height: 100%;
+            transition: .2s ease;
+        }
+
+        .card-soft:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(2,6,23,.08);
+        }
+
+        .icon-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #fff1eb;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            border: 2px solid var(--primary);
+            color: #fff;
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+
+        .btn-main:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            color: #fff;
+        }
+
+        footer {
+            background: #0b1f48;
+            color: #e2e8f0;
+            padding: 44px 0 20px;
+        }
+
+        footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+
+        footer a:hover { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <header class="main-nav">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link {% if section_key == 'universities' %}active{% endif %}" href="{{ url_for('universities') }}">Universities</a></li>
+                        <li class="nav-item"><a class="nav-link {% if section_key == 'colleges' %}active{% endif %}" href="{{ url_for('colleges') }}">Colleges</a></li>
+                        <li class="nav-item"><a class="nav-link {% if section_key == 'courses' %}active{% endif %}" href="{{ url_for('courses') }}">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link {% if section_key == 'exams' %}active{% endif %}" href="{{ url_for('exams') }}">Exams</a></li>
+                        <li class="nav-item"><a class="nav-link {% if section_key == 'news' %}active{% endif %}" href="{{ url_for('news') }}">News</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1>{{ section.title }}</h1>
+            <p>{{ section.subtitle }}</p>
+        </div>
+    </section>
+
+    <main>
+        <section class="section-pad" style="background: var(--bg-soft);">
+            <div class="container">
+                <div class="row g-3">
+                    {% for item in section['items'] %}
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card-soft">
+                            <div class="icon-badge"><i class="fa-solid fa-check"></i></div>
+                            <p class="mb-0">{{ item }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-center mt-5">
+                    <a class="btn btn-main" href="{{ url_for('feedback') }}">Share Feedback</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container d-flex flex-column flex-md-row justify-content-between gap-2 small">
+            <span>© VidyarthiMitra.org 2026. All Rights Reserved.</span>
+            <div class="d-flex gap-3">
+                <a href="{{ url_for('admissions') }}">Admissions</a>
+                <a href="{{ url_for('counselling') }}">Counselling</a>
+                <a href="{{ url_for('scholarship') }}">Scholarship</a>
+                <a href="{{ url_for('dte') }}">DTE</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

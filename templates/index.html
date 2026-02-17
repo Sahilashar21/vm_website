@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
+        
         :root {
             --primary: #ff6b35;
             --primary-dark: #e55a24;
@@ -39,6 +40,12 @@
             scroll-behavior: smooth;
         }
         
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #fff;
+            overflow-x: hidden;
+        }
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
@@ -47,6 +54,10 @@
             overflow-x: hidden;
         }
         
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
@@ -54,6 +65,14 @@
         }
         
         /* HEADER & NAVIGATION */
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e6e6e6;
+            transition: all 0.3s ease;
+        }
         header {
             background: #ffffff;
             box-shadow: 0 2px 20px rgba(0,0,0,0.05);
@@ -72,6 +91,13 @@
             padding: 1rem 2rem !important;
         }
         
+            font-weight: 800;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dark) !important;
+        }
         .navbar-brand {
             font-weight: 800;
             font-size: 1.5rem;
@@ -87,7 +113,6 @@
             transition: all 0.3s ease;
         }
         
-        .navbar-nav .nav-link {
             color: var(--text-dark) !important;
             font-weight: 600;
             font-size: 0.95rem;
@@ -96,27 +121,24 @@
             transition: all 0.3s ease;
             text-transform: capitalize;
         }
-        
-        .navbar-nav .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: var(--primary);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
+        .navbar-nav .nav-link {
+            color: #10213b !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 1.18rem;
+            padding: 0.7rem 1.6rem !important;
+            background: transparent;
+            border: none;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
         }
-        
-        .navbar-nav .nav-link:hover::after,
-        .navbar-nav .nav-link.active::after {
-            width: 80%;
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active {
-            color: var(--primary) !important;
+
+        .navbar-nav .nav-link.active,
+        .navbar-nav .nav-link:focus,
+        .navbar-nav .nav-link:hover {
+            color: #ff6b35 !important;
+            background: transparent;
+            outline: none;
         }
         
         .badge-new {
@@ -176,13 +198,15 @@
             font-weight: 800;
             margin-bottom: 25px;
             line-height: 1.2;
+            color: white;
         }
         
         .hero-content p {
             font-size: clamp(1rem, 4vw, 1.5rem);
             margin-bottom: 35px;
             font-weight: 300;
-            opacity: 0.95;
+            opacity: 1;
+            color: white;
         }
         
         @keyframes slideInUp {
@@ -413,6 +437,17 @@
         .info-box:hover {
             transform: translateY(-15px);
             box-shadow: 0 15px 40px rgba(255,107,53,0.15);
+        }
+        .info-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+        .info-link:focus .info-box,
+        .info-link:hover .info-box {
+            box-shadow: 0 15px 40px rgba(255,107,53,0.25);
+            transform: translateY(-15px) scale(1.03);
         }
         
         .info-box i {
@@ -710,7 +745,6 @@
             <div class="container">
                 <a class="navbar-brand" href="/">
                     <img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra">
-                    <span>Vidyarthi Mitra</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -727,6 +761,7 @@
                         <li class="nav-item"><a class="nav-link" href="/guide">Guide Me</a></li>
                     </ul>
                 </div>
+                <a href="/login" class="btn btn-primary-custom ms-2" style="letter-spacing:0.5px; font-family:'Poppins',sans-serif;">Login</a>
             </div>
         </nav>
     </header>
@@ -826,73 +861,91 @@
             
             <div class="row" style="margin-top: 40px;">
                 <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-university"></i>
-                        <h5>Universities</h5>
-                        <p>Information about top Universities recognized by the UGC that come under the categories: Govt, Private and Deemed.</p>
-                    </div>
+                    <a href="/universities" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-university"></i>
+                            <h5>Universities</h5>
+                            <p>Information about top Universities recognized by the UGC that come under the categories: Govt, Private and Deemed.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-building"></i>
-                        <h5>Colleges</h5>
-                        <p>List and information about top colleges, recognized institutes and their courses along with their contact information.</p>
-                    </div>
+                    <a href="/colleges" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-building"></i>
+                            <h5>Colleges</h5>
+                            <p>List and information about top colleges, recognized institutes and their courses along with their contact information.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-book"></i>
-                        <h5>Courses</h5>
-                        <p>Detailed information about Degree, Diploma & Masters and courses like Engineering, Management, Medical, Law, Architecture, Commerce, Arts, Agriculture, etc.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-pen-square"></i>
-                        <h5>Entrance Exams</h5>
-                        <p>Up-to-date news and information about various Entrance Exams & notifications like alerts, deadlines, results & important dates.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-bell"></i>
-                        <h5>Admissions</h5>
-                        <p>Alerts for application dates, eligibility criteria and admission openings to various Universities, Colleges, Institutes and their courses and streams.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-users"></i>
-                        <h5>Expert Advise</h5>
-                        <p>Career Counselling on education in India & Abroad in person and also via E-mails, Telephonic Conversations, Video Calls, etc.</p>
-                    </div>
+                    <a href="/courses" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-book"></i>
+                            <h5>Courses</h5>
+                            <p>Detailed information about Degree, Diploma & Masters and courses like Engineering, Management, Medical, Law, Architecture, Commerce, Arts, Agriculture, etc.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
             
             <div class="row">
                 <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-trophy"></i>
-                        <h5>Scholarship</h5>
-                        <p>Scholarships to help students pursue their dreams and career by supporting their education cost on the basis of academics and other factors.</p>
-                    </div>
+                    <a href="/exams" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-pen-square"></i>
+                            <h5>Entrance Exams</h5>
+                            <p>Up-to-date news and information about various Entrance Exams & notifications like alerts, deadlines, results & important dates.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-laptop"></i>
-                        <h5>Mock Exams</h5>
-                        <p>Students can know where they stand by taking mock tests for JEE, CET, CAT, NEET, etc by scrutinizing Performance Graphs, Self-Analysis & Expert Recommendations.</p>
-                    </div>
+                    <a href="/admissions" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-bell"></i>
+                            <h5>Admissions</h5>
+                            <p>Alerts for application dates, eligibility criteria and admission openings to various Universities, Colleges, Institutes and their courses and streams.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="info-box">
-                        <i class="fas fa-file-alt"></i>
-                        <h5>DTE</h5>
-                        <p>DTE & State CET Cell are Govt Agencies for Technical & Higher Education in Maharashtra. We ease admission process, by posting & explaining all recent updates.</p>
-                    </div>
+                    <a href="/counselling" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-users"></i>
+                            <h5>Expert Advise</h5>
+                            <p>Career Counselling on education in India & Abroad in person and also via E-mails, Telephonic Conversations, Video Calls, etc.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <a href="/scholarships" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-trophy"></i>
+                            <h5>Scholarship</h5>
+                            <p>Scholarships to help students pursue their dreams and career by supporting their education cost on the basis of academics and other factors.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <a href="/mock-exams" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-laptop"></i>
+                            <h5>Mock Exams</h5>
+                            <p>Students can know where they stand by taking mock tests for JEE, CET, CAT, NEET, etc by scrutinizing Performance Graphs, Self-Analysis & Expert Recommendations.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <a href="/dte" class="info-link">
+                        <div class="info-box">
+                            <i class="fas fa-file-alt"></i>
+                            <h5>DTE</h5>
+                            <p>DTE & State CET Cell are Govt Agencies for Technical & Higher Education in Maharashtra. We ease admission process, by posting & explaining all recent updates.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

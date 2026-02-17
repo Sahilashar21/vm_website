@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
+    <title>404 | Vidyarthi Mitra</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #ff6b35;
+                --primary-dark: #e55a2e;
+                --text: #1e293b;
+                --muted: #b85a2e;
+                --line: #ffe5d1;
+                --bg-soft: #fff7f0;
+            }
+            body {
+                font-family: 'Inter', sans-serif;
+                background: var(--bg-soft);
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            .wrap { text-align: center; padding: 32px; }
+            .btn-main { background: var(--primary); color: #fff; border-radius: 999px; padding: 10px 18px; text-decoration: none; }
+            .btn-main:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>404</h1>
+        <p>Page not found. Please go back to home.</p>
+        <a class="btn-main" href="{{ url_for('index') }}">Go Home</a>
+    </div>
+</body>
+</html>
