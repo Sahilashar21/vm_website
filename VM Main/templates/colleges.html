@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}Top Colleges | Vidyarthi Mitra{% endblock %}
+
+{% block page_styles %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary: #ff6600;
+        --secondary: #e65c00;
+        --text: #1e293b;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --bg-soft: #f8fafc;
+    }
+
+    .college-page {
+        font-family: 'Inter', sans-serif;
+        color: var(--text);
+        background: var(--bg-soft);
+    }
+
+    .college-page h1, .college-page h2, .college-page h3, .college-page h4 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+    }
+
+    .page-wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 18px;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #e65c00, #ff8a33);
+        color: #fff;
+        padding: 56px 0;
+    }
+
+    .hero h1 {
+        margin-bottom: 10px;
+        font-size: clamp(1.9rem, 5vw, 3rem);
+    }
+
+    .hero p {
+        margin: 0;
+        max-width: 980px;
+        opacity: .95;
+    }
+
+    .section-pad { padding: 32px 0 52px; }
+
+    .layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+    }
+
+    .filter-panel {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(15,23,42,.05);
+        margin-bottom: 14px;
+    }
+
+    .filter-head {
+        background: #fff4eb;
+        border-bottom: 1px solid #ffd9bf;
+        color: var(--secondary);
+        font-weight: 700;
+        padding: 10px 14px;
+        font-size: .95rem;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .filter-search {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 10px 12px;
+        font-size: .9rem;
+        outline: none;
+    }
+
+    .filter-list {
+        max-height: 190px;
+        overflow: auto;
+        padding: 8px 0;
+    }
+
+    .filter-item {
+        padding: 8px 12px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: .88rem;
+        color: #334155;
+    }
+
+    .cards-wrap {
+        display: grid;
+        gap: 12px;
+    }
+
+    .college-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(15,23,42,.05);
+        display: grid;
+        grid-template-columns: 108px 1fr;
+        gap: 12px;
+        padding: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: .2s ease;
+    }
+
+    .college-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 26px rgba(15,23,42,.08);
+    }
+
+    .college-logo {
+        width: 100%;
+        height: 84px;
+        object-fit: contain;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #f8fafc;
+        padding: 8px;
+    }
+
+    .college-title {
+        margin: 0 0 8px;
+        color: var(--secondary);
+        font-size: clamp(.98rem, 1.6vw, 1.18rem);
+        line-height: 1.35;
+        text-transform: uppercase;
+    }
+
+    .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .chip {
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-size: .74rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .2px;
+        background: #ff8a33;
+        color: #fff;
+    }
+
+    .chip.nirf { background: var(--primary); }
+
+    .meta-note {
+        color: var(--muted);
+        font-size: .92rem;
+        margin-bottom: 14px;
+    }
+
+    .empty-state {
+        background: #fff;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 18px;
+        color: #64748b;
+        text-align: center;
+        font-weight: 600;
+        display: none;
+    }
+
+    .icon-gap { margin-right: 8px; }
+    .icon-gap-sm { margin-right: 4px; }
+
+    @media (max-width: 992px) {
+        .layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 576px) {
+        .college-card { grid-template-columns: 1fr; }
+        .college-logo { max-width: 120px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="college-page">
+<section class="hero">
+    <div class="page-wrap">
+        <h1>Top Colleges in India</h1>
+        <p>Catalogue of colleges with discover-more style filters inspired by the original flow. Showing {{ colleges|length }} live records.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="page-wrap">
+        <p class="meta-note">Use filters to shortlist colleges by state/city and compare institution type with NIRF indicators.</p>
+        <div class="empty-state" id="noResults">No colleges match the selected filters.</div>
+
+        <div class="layout">
+            <aside>
+                <div class="filter-panel" data-filter-group="state">
+                    <div class="filter-head"><i class="fa fa-map-marker icon-gap"></i>State</div>
+                    <input class="filter-search" id="stateSearch" type="text" placeholder="Search state..." aria-label="Search state">
+                    <div class="filter-list" id="stateList">
+                        {% for state in states %}
+                        <label class="filter-item"><input type="checkbox" value="{{ state }}"> <span>{{ state }}</span></label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-panel" data-filter-group="city">
+                    <div class="filter-head"><i class="fa fa-map-marker icon-gap"></i>City</div>
+                    <div class="filter-list">
+                        {% for city in cities %}
+                        <label class="filter-item"><input type="checkbox" value="{{ city }}"> <span>{{ city }}</span></label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-panel" data-filter-group="type">
+                    <div class="filter-head"><i class="fa fa-th-large icon-gap"></i>Type</div>
+                    <div class="filter-list">
+                        {% for type in types %}
+                        <label class="filter-item"><input type="checkbox" value="{{ type }}"> <span>{{ type }}</span></label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-panel" data-filter-group="stream">
+                    <div class="filter-head"><i class="fa fa-book icon-gap"></i>Stream</div>
+                    <div class="filter-list">
+                        {% for stream in streams %}
+                        <label class="filter-item"><input type="checkbox" value="{{ stream }}"> <span>{{ stream }}</span></label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </aside>
+
+            <section class="cards-wrap" id="collegeCards">
+                {% for college in colleges %}
+                <a class="college-card"
+                   href="{{ college.source_url }}"
+                   target="_blank"
+                   rel="noopener"
+                   data-state="{{ college.state }}"
+                   data-city="{{ college.city }}"
+                   data-type="{{ college.type }}"
+                   data-stream="{{ college.stream }}">
+                    <img class="college-logo" src="{{ college.logo_url }}" alt="{{ college.name }}">
+                    <div>
+                        <h2 class="college-title">{{ college.name }}</h2>
+                        <div class="chips">
+                            <span class="chip"><i class="fa fa-map-marker icon-gap-sm"></i>{{ college.city }}</span>
+                            <span class="chip">{{ college.type }}</span>
+                            <span class="chip">{{ college.stream }}</span>
+                            <span class="chip nirf">NIRF {{ college.nirf }}</span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+</section>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.college-card');
+        const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
+        const emptyState = document.getElementById('noResults');
+        const stateSearch = document.getElementById('stateSearch');
+
+        function getCheckedValues(groupName) {
+            return Array.from(document.querySelectorAll('[data-filter-group="' + groupName + '"] input:checked'))
+                .map(cb => cb.value.trim());
+        }
+
+        function applyFilters() {
+            const stateFilters = getCheckedValues('state');
+            const cityFilters = getCheckedValues('city');
+            const typeFilters = getCheckedValues('type');
+            const streamFilters = getCheckedValues('stream');
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const state = (card.dataset.state || '').trim();
+                const city = (card.dataset.city || '').trim();
+                const type = (card.dataset.type || '').trim();
+                const stream = (card.dataset.stream || '').trim();
+
+                const matchesState = stateFilters.length === 0 || stateFilters.includes(state);
+                const matchesCity = cityFilters.length === 0 || cityFilters.includes(city);
+                const matchesType = typeFilters.length === 0 || typeFilters.includes(type);
+                const matchesStream = streamFilters.length === 0 || streamFilters.includes(stream);
+
+                if (matchesState && matchesCity && matchesType && matchesStream) {
+                    card.style.display = 'grid';
+                    visibleCount += 1;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        if (stateSearch) {
+            stateSearch.addEventListener('input', function() {
+                const query = stateSearch.value.trim().toLowerCase();
+                document.querySelectorAll('#stateList .filter-item').forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            });
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', applyFilters);
+        });
+
+        applyFilters();
+    });
+</script>
+{% endblock %}

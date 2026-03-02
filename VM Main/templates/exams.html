@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}Entrance Exams | Vidyarthi Mitra{% endblock %}
+
+{% block page_styles %}
+<style>
+  :root {
+    --exam-primary: #ff6600;
+    --exam-primary-dark: #e55a00;
+    --exam-bg: #fff8f3;
+    --exam-line: #f0dccf;
+    --exam-text: #2c2c2c;
+    --exam-muted: #666;
+  }
+
+  .exam-hero {
+    background: linear-gradient(135deg, #ff7a1a 0%, #ff6600 55%, #e55a00 100%);
+    color: #fff;
+    padding: 56px 20px;
+  }
+
+  .exam-hero-inner {
+    max-width: 1150px;
+    margin: 0 auto;
+  }
+
+  .exam-hero h1 {
+    margin: 0 0 12px;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .exam-hero p {
+    margin: 0;
+    max-width: 860px;
+    font-size: 1rem;
+    opacity: 0.95;
+  }
+
+  .exam-wrap {
+    max-width: 1150px;
+    margin: 26px auto 40px;
+    padding: 0 20px;
+  }
+
+  .section-title {
+    margin: 0 0 14px;
+    color: var(--exam-text);
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+
+  .exam-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .exam-card {
+    border: 1px solid var(--exam-line);
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 6px 16px rgba(17, 24, 39, 0.06);
+  }
+
+  .exam-card h3 {
+    margin: 0 0 8px;
+    color: var(--exam-primary-dark);
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .exam-meta {
+    margin: 0;
+    color: var(--exam-muted);
+    font-size: 0.93rem;
+    line-height: 1.45;
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .exam-badge {
+    background: var(--exam-bg);
+    border: 1px solid var(--exam-line);
+    color: #7a3f16;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+  }
+
+  .timeline {
+    border: 1px solid var(--exam-line);
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px dashed #ecd4c3;
+  }
+
+  .timeline-item:last-child {
+    border-bottom: 0;
+  }
+
+  .timeline-month {
+    color: var(--exam-primary-dark);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .timeline-text {
+    color: var(--exam-text);
+    font-size: 0.94rem;
+    line-height: 1.45;
+  }
+
+  .cta-box {
+    margin-top: 20px;
+    border: 1px solid var(--exam-line);
+    border-radius: 12px;
+    background: #fff;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .cta-box p {
+    margin: 0;
+    color: var(--exam-text);
+    font-size: 0.95rem;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    border-radius: 9px;
+    background: var(--exam-primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 14px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .cta-btn:hover {
+    background: var(--exam-primary-dark);
+    color: #fff;
+  }
+
+  @media (max-width: 980px) {
+    .exam-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .exam-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline-item {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .cta-box {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="exam-hero">
+  <div class="exam-hero-inner">
+    <h1>Entrance Exams Guidance</h1>
+    <p>Engineering, medical, management aur law entrance exams ke liye quick overview, important timelines, aur preparation direction ek hi page par.</p>
+  </div>
+</section>
+
+<section class="exam-wrap">
+  <h2 class="section-title">Popular Entrance Exams</h2>
+  <div class="exam-grid">
+    <article class="exam-card">
+      <h3>JEE Main</h3>
+      <p class="exam-meta">Engineering admissions ke liye national-level exam. NITs, IIITs aur multiple top institutes mein accepted.</p>
+      <div class="badge-row">
+        <span class="exam-badge">Engineering</span>
+        <span class="exam-badge">National</span>
+      </div>
+    </article>
+
+    <article class="exam-card">
+      <h3>NEET UG</h3>
+      <p class="exam-meta">Medical and dental admissions ke liye primary entrance test. MBBS, BDS aur allied medical courses ke liye important.</p>
+      <div class="badge-row">
+        <span class="exam-badge">Medical</span>
+        <span class="exam-badge">UG</span>
+      </div>
+    </article>
+
+    <article class="exam-card">
+      <h3>MHT-CET</h3>
+      <p class="exam-meta">Maharashtra state-level exam for engineering, pharmacy aur selected professional programs.</p>
+      <div class="badge-row">
+        <span class="exam-badge">State</span>
+        <span class="exam-badge">CET</span>
+      </div>
+    </article>
+
+    <article class="exam-card">
+      <h3>CUET UG</h3>
+      <p class="exam-meta">Central universities aur participating institutions ke UG admissions ke liye common entrance test.</p>
+      <div class="badge-row">
+        <span class="exam-badge">University</span>
+        <span class="exam-badge">UG</span>
+      </div>
+    </article>
+
+    <article class="exam-card">
+      <h3>CLAT</h3>
+      <p class="exam-meta">Law aspirants ke liye entrance exam, NLUs aur multiple reputed law institutions mein admission ke liye.</p>
+      <div class="badge-row">
+        <span class="exam-badge">Law</span>
+        <span class="exam-badge">National</span>
+      </div>
+    </article>
+
+    <article class="exam-card">
+      <h3>CAT</h3>
+      <p class="exam-meta">MBA admissions ke liye major management entrance exam. IIMs aur top B-schools widely accept karte hain.</p>
+      <div class="badge-row">
+        <span class="exam-badge">MBA</span>
+        <span class="exam-badge">Management</span>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="section-title">Typical Admission Timeline</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-month">Jan - Mar</div>
+      <div class="timeline-text">Application forms, registrations, and exam notifications check karke form fill karein.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-month">Apr - Jun</div>
+      <div class="timeline-text">Major exams aur answer keys release hote hain. Score estimation aur cut-off trend dekhna useful hota hai.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-month">Jun - Aug</div>
+      <div class="timeline-text">Results, rank lists, counselling registrations aur document readiness par focus rakhein.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-month">Aug - Oct</div>
+      <div class="timeline-text">Choice filling, seat allotment rounds aur admission confirmation complete karein.</div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <p>Exam ke baad branch aur college shortlist karna hai? Cut-off tools se quick comparison karein.</p>
+    <a class="cta-btn" href="{{ url_for('cutoffs') }}">Check Cut-Offs</a>
+  </div>
+</section>
+{% endblock %}
