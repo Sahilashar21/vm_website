@@ -891,7 +891,7 @@ def mock_exams():
 
 @app.route("/epaper")
 def epaper():
-    return render_section("epaper")
+    return render_template("epaper.html")
 
 
 @app.route("/guide")
@@ -906,7 +906,7 @@ def blog():
 
 @app.route("/news")
 def news():
-    return render_section("news")
+    return render_template("news.html")
 
 
 @app.route("/feedback")
@@ -916,7 +916,7 @@ def feedback():
 
 @app.route("/admissions")
 def admissions():
-    return render_section("admissions")
+    return render_template("admission.html")
 
 
 @app.route("/counselling")
