@@ -1,91 +1,87 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Admissions | Vidyarthi Mitra">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
-    <title>Admissions | Vidyarthi Mitra</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+{% extends "base.html" %}
 
-    <style>
-        :root { --primary:#ff6b35; --dark:#1e293b; --muted:#64748b; --line:#e2e8f0; --soft:#f8fafc; }
-        body { font-family:'Inter',sans-serif; color:var(--dark); background:#fff; }
-        h1,h2,h3 { font-family:'Poppins',sans-serif; font-weight:700; }
-        .main-nav { border-bottom:1px solid var(--line); background:#fff; position:sticky; top:0; z-index:1000; }
-        .navbar-brand img{ height:42px; }
-        .navbar-nav .nav-link { color:var(--dark); font-weight:600; margin:0 6px; padding:8px 10px !important; }
-        .navbar-nav .nav-link:hover,.navbar-nav .nav-link.active{ color:var(--primary); }
-        .hero{ background:linear-gradient(135deg,#e65c00,#ff8a33); color:#fff; padding:54px 0; }
-        .hero p{ margin:0; opacity:.95; max-width:880px; }
-        .section-pad{ padding:30px 0 50px; background:var(--soft); }
-        .card-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-        .notice-card{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 8px 20px rgba(15,23,42,.05); }
-        .notice-card h3{ color:#e65c00; font-size:1rem; line-height:1.4; margin:0 0 8px; }
-        .notice-card p{ margin:0; color:#334155; font-size:.92rem; }
-        .notice-card a{ color:var(--primary); font-weight:700; text-decoration:none; }
-        .links-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:10px; }
-        .links-grid a{ background:#fff; border:1px solid var(--line); border-radius:10px; text-align:center; padding:10px; text-decoration:none; color:#e65c00; font-weight:700; }
-        .box{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:18px; }
-        footer { background:#0b1f48; color:#e2e8f0; padding:24px 0; }
-        footer a { color:#cbd5e1; text-decoration:none; }
-        @media (max-width:992px){ .card-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .links-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
-        @media (max-width:640px){ .card-grid,.links-grid{grid-template-columns:1fr;} }
-    </style>
-</head>
-<body>
-<header class="main-nav">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('universities') }}">Universities</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('colleges') }}">Colleges</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('courses') }}">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('admissions') }}">Admissions</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">News</a></li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</header>
+{% block title %}Admissions 2024-25 | Vidyarthi Mitra{% endblock %}
 
-<section class="hero"><div class="container"><h1>Admissions 2024-25</h1><p>Find trending admission notices, important links and student guidance in one place.</p></div></section>
+{% block page_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admission.css') }}">
+{% endblock %}
 
-<section class="section-pad">
-    <div class="container">
-        <h2 class="mb-3">Trending Admission Notices</h2>
-        <div class="card-grid">
-            <article class="notice-card"><h3>Bachelor of Engineering and Technology Admissions</h3><p>Engineering admission updates. <a href="https://vidyarthimitra.org/admission/Bachelor-of-Engineering-and-Technology-Admissions-2021-22" target="_blank" rel="noopener">Read More</a></p></article>
-            <article class="notice-card"><h3>Hotel Management & Catering Technology</h3><p>Programs and process details. <a href="https://vidyarthimitra.org/admission/Bachelor-of-Hotel-Management-and-Catering-Technology-Admissions-2021-2022" target="_blank" rel="noopener">Read More</a></p></article>
-            <article class="notice-card"><h3>NIFT Admissions</h3><p>Fashion technology notices. <a href="https://vidyarthimitra.org/admission/National-Institute-of-Fashion-Technology-admissions-2021:-Apply-Now" target="_blank" rel="noopener">Read More</a></p></article>
+{% block content %}
+<div class="admission-page">
+    <header class="admission-header">
+        <div class="admission-wrap">
+            <h1>Admissions 2024-25</h1>
+            <p>Find trending admission notices, important links, and expert guidance for all courses and colleges.</p>
         </div>
+    </header>
 
-        <h2 class="mt-4 mb-2">Quick Links</h2>
-        <div class="links-grid">
-            <a href="{{ url_for('universities') }}">Universities</a>
-            <a href="{{ url_for('colleges') }}">Colleges</a>
-            <a href="{{ url_for('courses') }}">Courses</a>
-            <a href="{{ url_for('exams') }}">Entrance Exams</a>
-            <a href="{{ url_for('mock_exams') }}">Mock Exams</a>
-            <a href="{{ url_for('epaper') }}">Epaper</a>
-            <a href="{{ url_for('news') }}">News</a>
-            <a href="{{ url_for('guide') }}">Guide</a>
+    <section class="admission-main">
+        <div class="admission-wrap">
+            <section class="admission-cards-section">
+                <div class="section-header">
+                    <h2>Trending Admission Notices</h2>
+                </div>
+                <div class="admission-cards">
+                    <div class="admission-card">
+                        <h3>Bachelor of Engineering and Technology Admissions</h3>
+                        <p>Engineering, Technology courses for 2024-25. <a href="https://vidyarthimitra.org/admission/Bachelor-of-Engineering-and-Technology-Admissions-2021-22" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>Hotel Management & Catering Technology Admissions</h3>
+                        <p>Hotel Management, Catering Technology programs. <a href="https://vidyarthimitra.org/admission/Bachelor-of-Hotel-Management-and-Catering-Technology-Admissions-2021-2022" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>National Institute of Fashion Technology Admissions</h3>
+                        <p>Fashion Technology, Design courses. <a href="https://vidyarthimitra.org/admission/National-Institute-of-Fashion-Technology-admissions-2021:-Apply-Now" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>BE / BTech Admission Process</h3>
+                        <p>Admission process for BE/BTech. <a href="https://vidyarthimitra.org/admission/B.E.-B.-Tech.-for-Academic-Year-2020-21" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>MA Admissions at TISS</h3>
+                        <p>MA programs at TISS. <a href="https://vidyarthimitra.org/admission/Admissions-Open-for-MA-2021-at-TISS:-Apply" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>Indian Institute of Skill - Factory Automation Course</h3>
+                        <p>Skill development, automation course. <a href="https://vidyarthimitra.org/admission/Indian-Institute-of-Skill-invites-applications-for-factory-automation-course-2020" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                </div>
+                <div class="more-trending">
+                    <a href="https://vidyarthimitra.org/admission" target="_blank" rel="noopener">View All Admissions</a>
+                </div>
+            </section>
+
+            <section class="quick-links-section">
+                <div class="section-header">
+                    <h2>Quick Links</h2>
+                </div>
+                <div class="quick-links-grid">
+                    <a href="{{ url_for('universities') }}" class="quick-link">Universities</a>
+                    <a href="{{ url_for('colleges') }}" class="quick-link">Colleges</a>
+                    <a href="{{ url_for('courses') }}" class="quick-link">Courses</a>
+                    <a href="{{ url_for('exams') }}" class="quick-link">Entrance Exams</a>
+                    <a href="{{ url_for('mock_exams') }}" class="quick-link">Mock Exams</a>
+                    <a href="{{ url_for('cutoffs') }}" class="quick-link">Cut-Offs</a>
+                    <a href="{{ url_for('guide_me') }}" class="quick-link">Guide Me</a>
+                </div>
+            </section>
+
+            <section class="expert-contact-section">
+                <div class="section-header">
+                    <h2>Contact & Support</h2>
+                </div>
+                <div class="contact-details">
+                    <p>For expert advice and help, reach out:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:contact@vidyarthimitra.org">contact@vidyarthimitra.org</a></li>
+                        <li>Phone: <a href="tel:7720025900">+91 77200 25900</a>, <a href="tel:7720081400">+91 77200 81400</a></li>
+                        <li>WhatsApp: <a href="https://api.whatsapp.com/send?phone=917720025900&text=Hello,%20Vidyarthimitra.org,%20My%20Name%20is%20(........),%20My%20City%20(........),%20I%20want%20information%20about%20(........)%20Thank%20You" target="_blank" rel="noopener">Chat on WhatsApp</a></li>
+                    </ul>
+                </div>
+            </section>
         </div>
-
-        <div class="box">
-            Contact: <a href="mailto:contact@vidyarthimitra.org">contact@vidyarthimitra.org</a> | <a href="tel:7720025900">+91 77200 25900</a>
-        </div>
-    </div>
-</section>
-
-<footer><div class="container small d-flex justify-content-between flex-wrap gap-2"><span>© VidyarthiMitra.org 2026</span><span>Admissions • Counselling • Scholarships</span></div></footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </section>
+</div>
+{% endblock %}

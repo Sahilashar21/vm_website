@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 from dotenv import load_dotenv
 from functools import wraps
 
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 
 load_dotenv()
 
@@ -876,17 +876,24 @@ def courses():
 
 @app.route("/exams")
 def exams():
-    return render_section("exams")
+    return render_template("exams.html")
 
 
 @app.route("/entrance-exams")
+@app.route("/entrance_exams")
 def entrance_exams():
-    return render_section("exams")
+    return render_template("exams.html")
 
 
 @app.route("/mock-exams")
+@app.route("/mock_exams")
 def mock_exams():
-    return render_section("mock_exams")
+    return render_template("mock_exams.html")
+
+
+@app.route("/cutoffs")
+def cutoffs():
+    return render_template("cutoffs.html")
 
 
 @app.route("/epaper")
@@ -896,7 +903,32 @@ def epaper():
 
 @app.route("/guide")
 def guide():
-    return render_section("guide")
+    return redirect(url_for("guide_me"))
+
+
+@app.route("/guide-me", methods=["GET", "POST"])
+@app.route("/guide_me", methods=["GET", "POST"])
+@app.route("/guideme", methods=["GET", "POST"])
+def guide_me():
+    if request.method == "POST":
+        full_name = (request.form.get("full_name") or "").strip()
+        whatsapp = (request.form.get("whatsapp") or "").strip()
+        email = (request.form.get("email") or "").strip()
+        address = (request.form.get("address") or "").strip()
+        requirement_type = (request.form.get("requirement_type") or "").strip()
+
+        if not all([full_name, whatsapp, email, address, requirement_type]):
+            flash("Please fill all required fields before submitting.", "error")
+            return redirect(url_for("guide_me"))
+
+        if not re.fullmatch(r"\d{10}", whatsapp):
+            flash("WhatsApp number must be exactly 10 digits.", "error")
+            return redirect(url_for("guide_me"))
+
+        flash("Thank you! Your guidance request has been submitted successfully.", "success")
+        return redirect(url_for("guide_me"))
+
+    return render_template("GuideMe1.html")
 
 
 @app.route("/blog")
@@ -907,6 +939,11 @@ def blog():
 @app.route("/news")
 def news():
     return render_template("news.html")
+
+
+@app.route("/chatbot")
+def chatbot():
+    return render_template("chatbot.html")
 
 
 @app.route("/feedback")
@@ -925,8 +962,14 @@ def counselling():
 
 
 @app.route("/scholarship")
+@app.route("/scholarships")
 def scholarship():
     return render_section("scholarship")
+
+
+@app.route("/refund-policy")
+def refund_policy():
+    return render_template("refund.html")
 
 
 @app.route("/dte")

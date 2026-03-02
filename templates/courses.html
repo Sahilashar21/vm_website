@@ -1,308 +1,127 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Courses | Vidyarthi Mitra</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
+{% extends "base.html" %}
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+{% block title %}Courses | Vidyarthi Mitra{% endblock %}
 
-    <style>
-        :root {
-            --primary: #ff6b35;
-            --primary-dark: #e55a2e;
-            --text: #1e293b;
-            --muted: #b85a2e;
-            --bg-soft: #fff7f0;
-            --line: #ffe5d1;
-        }
+{% block page_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='courses.css') }}">
+{% endblock %}
 
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            background: var(--bg-soft);
-        }
+{% block content %}
 
-        h1, h2, h3, h4 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-        }
+<header class="course-header">
+  <h1>Explore Courses</h1>
+  <p>Engineering, Medical, Management, IT, Law & More</p>
+  <div class="header-actions">
+    <a class="header-link" href="{{ url_for('cutoffs') }}">Check Cut-offs</a>
+  </div>
+</header>
 
-        .main-nav {
-            border-bottom: 1px solid var(--line);
-            background: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+<section class="course-categories">
+  <div class="category-card">Engineering</div>
+  <div class="category-card">Medical</div>
+  <div class="category-card">Management</div>
+  <div class="category-card">IT & Data</div>
+  <div class="category-card">Law</div>
+  <div class="category-card">Design</div>
+</section>
 
-        .navbar-brand img { height: 42px; }
+<section class="course-section">
+  <h2>Engineering Courses</h2>
+  <div class="course-grid">
+    <div class="course-card">
+      <h3>B.Tech</h3>
+      <p>Computer Science, Mechanical, Civil, Electrical</p>
+      <span>Duration: 4 Years</span>
+    </div>
+    <div class="course-card">
+      <h3>M.Tech</h3>
+      <p>Advanced Engineering & Research</p>
+      <span>Duration: 2 Years</span>
+    </div>
+    <div class="course-card">
+      <h3>Diploma Engineering</h3>
+      <p>Polytechnic & Skill-based Engineering</p>
+      <span>Duration: 3 Years</span>
+    </div>
+  </div>
+</section>
 
-        .navbar-nav .nav-link {
-            color: var(--text);
-            font-weight: 600;
-            margin: 0 6px;
-            padding: 8px 10px !important;
-        }
+<section class="course-section soft-bg">
+  <h2>IT & Data Science Courses</h2>
+  <div class="course-grid">
+    <div class="course-card">
+      <h3>B.Sc Data Science</h3>
+      <p>AI, ML, Big Data, Python</p>
+      <span>High Demand</span>
+    </div>
+    <div class="course-card">
+      <h3>AI & Machine Learning</h3>
+      <p>Future-ready AI technologies</p>
+      <span>Trending</span>
+    </div>
+    <div class="course-card">
+      <h3>Cyber Security</h3>
+      <p>Ethical Hacking & Security</p>
+      <span>Global Scope</span>
+    </div>
+  </div>
+</section>
 
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active { color: var(--primary); }
+<section class="course-section">
+  <h2>Medical & Healthcare Courses</h2>
+  <div class="course-grid">
+    <div class="course-card">
+      <h3>MBBS</h3>
+      <p>Doctor of Medicine</p>
+      <span>Duration: 5.5 Years</span>
+    </div>
+    <div class="course-card">
+      <h3>BDS</h3>
+      <p>Dental Surgery</p>
+      <span>Duration: 5 Years</span>
+    </div>
+    <div class="course-card">
+      <h3>B.Pharmacy</h3>
+      <p>Pharmaceutical Sciences</p>
+      <span>Duration: 4 Years</span>
+    </div>
+  </div>
+</section>
 
-        .hero {
-            background: linear-gradient(135deg, rgba(22,63,138,.96), rgba(255,107,53,.76));
-            color: #fff;
-            padding: 56px 0;
-        }
+<section class="course-section soft-bg">
+  <h2>Management & Business</h2>
+  <div class="course-grid">
+    <div class="course-card">
+      <h3>MBA</h3>
+      <p>Marketing, Finance, HR, Operations</p>
+      <span>High Salary</span>
+    </div>
+    <div class="course-card">
+      <h3>BBA</h3>
+      <p>Business Administration</p>
+      <span>Leadership Focus</span>
+    </div>
+    <div class="course-card">
+      <h3>PGDM</h3>
+      <p>Industry-oriented Management</p>
+      <span>Corporate Ready</span>
+    </div>
+  </div>
+</section>
 
-        .hero h1 {
-            margin-bottom: 10px;
-            font-size: clamp(1.9rem, 5vw, 3rem);
-        }
+<section class="career-support">
+  <h2>Career Support & Guidance</h2>
+  <p>Vidyarthi Mitra helps you choose the right course based on your interest, aptitude, exams & future opportunities.</p>
+  <div class="support-grid">
+    <div class="support-card">Career Counseling</div>
+    <div class="support-card">Entrance Exam Guidance</div>
+    <div class="support-card">Abroad Education Support</div>
+    <div class="support-card">Placement Preparation</div>
+  </div>
+</section>
 
-        .hero p {
-            margin: 0;
-            max-width: 980px;
-            opacity: .95;
-        }
+{% endblock %}
 
-        .section-pad { padding: 32px 0 52px; }
-
-        .layout {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 20px;
-        }
-
-        .filter-panel {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(15,23,42,.05);
-            margin-bottom: 14px;
-        }
-
-        .filter-head {
-            background: #eef4ff;
-            border-bottom: 1px solid #d8e4ff;
-            color: #1e3a8a;
-            font-weight: 700;
-            padding: 10px 14px;
-            font-size: .95rem;
-            text-transform: uppercase;
-            letter-spacing: .3px;
-        }
-
-        .filter-search {
-            width: 100%;
-            border: 0;
-            border-bottom: 1px solid var(--line);
-            padding: 10px 12px;
-            font-size: .9rem;
-            outline: none;
-        }
-
-        .filter-list {
-            max-height: 240px;
-            overflow: auto;
-            padding: 8px 0;
-        }
-
-        .filter-item {
-            padding: 8px 12px;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            font-size: .88rem;
-            color: #334155;
-        }
-
-        .cards-wrap {
-            display: grid;
-            gap: 12px;
-        }
-
-        .course-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(15,23,42,.05);
-            display: grid;
-            grid-template-columns: 100px 1fr;
-            gap: 12px;
-            padding: 12px;
-            text-decoration: none;
-            color: inherit;
-            transition: .2s ease;
-        }
-
-        .course-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 26px rgba(15,23,42,.08);
-        }
-
-        .course-logo {
-            width: 100%;
-            height: 80px;
-            object-fit: contain;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            background: #f8fafc;
-            padding: 8px;
-        }
-
-        .course-title {
-            margin: 0 0 8px;
-            color: #1e3a8a;
-            font-size: clamp(.98rem, 1.6vw, 1.15rem);
-            line-height: 1.35;
-            text-transform: uppercase;
-            word-wrap: break-word;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .chip {
-            border-radius: 999px;
-            padding: 5px 10px;
-            font-size: .73rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .2px;
-            background: #1f3f8c;
-            color: #fff;
-        }
-
-        .meta-note {
-            color: var(--muted);
-            font-size: .92rem;
-            margin-bottom: 14px;
-        }
-
-        @media (max-width: 992px) {
-            .layout { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 576px) {
-            .course-card { grid-template-columns: 1fr; }
-            .course-logo { max-width: 100px; }
-        }
-    </style>
-</head>
-<body>
-
-    <header class="main-nav">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('universities') }}">Universities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('colleges') }}">Colleges</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('courses') }}">Courses</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exams') }}">Entrance Exams</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('mock_exams') }}">Mock Exams</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <h1>Explore Courses & Streams</h1>
-            <p>Discover courses across Engineering, Medical, Law, Commerce, Arts, and specialized fields. Showing {{ courses|length }} live courses from multiple streams.</p>
-        </div>
-    </section>
-
-    <main class="section-pad">
-        <div class="container">
-            <p class="meta-note">Use stream filter to explore courses and understand career pathways in your field of interest.</p>
-
-            <div class="layout">
-                <aside>
-                    <div class="filter-panel">
-                        <div class="filter-head"><i class="fa-solid fa-stream me-2"></i>Stream</div>
-                        <input class="filter-search" type="text" placeholder="Search stream..." aria-label="Search stream">
-                        <div class="filter-list">
-                            {% for stream in streams %}
-                            <label class="filter-item"><input type="checkbox"> <span>{{ stream }}</span></label>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </aside>
-
-                <section class="cards-wrap">
-                    {% for course in courses %}
-                    <a class="course-card" 
-                       href="{{ course.source_url }}" 
-                       target="_blank" 
-                       rel="noopener"
-                       data-stream="{{ course.stream }}">
-                        <img class="course-logo" src="{{ course.logo_url }}" alt="{{ course.name }}">
-                        <div>
-                            <h2 class="course-title">{{ course.name }}</h2>
-                            <div class="chips">
-                                <span class="chip"><i class="fa-solid fa-graduation-cap me-1"></i>{{ course.stream }}</span>
-                            </div>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </section>
-            </div>
-        </div>
-    </main>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.course-card');
-            const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
-            
-            function applyFilters() {
-                // Get all checked stream filters
-                const streamFilters = Array.from(document.querySelectorAll('.filter-panel input:checked'))
-                    .map(cb => cb.nextElementSibling.textContent.trim());
-                
-                const hasFilter = streamFilters.length > 0;
-                
-                // Filter cards
-                cards.forEach(card => {
-                    if (!hasFilter) {
-                        card.style.display = 'grid';
-                        return;
-                    }
-                    
-                    const stream = card.dataset.stream || '';
-                    let matchesStream = streamFilters.includes(stream);
-                    
-                    if (matchesStream) {
-                        card.style.display = 'grid';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            }
-            
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', applyFilters);
-            });
-        });
-    </script>
-</body>
-</html>
+{% block page_scripts %}
+<script src="{{ url_for('static', filename='courses.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}Guide Me - Admission Guidance Form | Vidyarthi Mitra{% endblock %}
+
+{% block page_styles %}
+  <style>
+    :root {
+      --guide-primary: #ff6600;
+      --guide-primary-dark: #e65a00;
+      --guide-line: #e5e7eb;
+      --guide-soft: #fff4eb;
+      --guide-text: #1f2937;
+      --guide-muted: #64748b;
+      --guide-bg: #f8fafc;
+    }
+
+    .guide-page {
+      background: var(--guide-bg);
+      color: var(--guide-text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .guide-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+
+    .guide-hero {
+      background: linear-gradient(135deg, #e65c00, #ff8a33);
+      color: #fff;
+      padding: 52px 0;
+    }
+
+    .guide-hero h1 {
+      margin: 0 0 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      font-weight: 700;
+    }
+
+    .guide-hero p {
+      margin: 0;
+      max-width: 900px;
+      opacity: .95;
+    }
+
+    .guide-main {
+      padding: 30px 0 56px;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .guide-card,
+    .form-card {
+      border: 1px solid var(--guide-line);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15,23,42,.06);
+      padding: 16px;
+    }
+
+    .card-head {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--guide-primary-dark);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .guide-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #334155;
+      font-size: .92rem;
+      line-height: 1.55;
+    }
+
+    .guide-list li { margin-bottom: 8px; }
+
+    .quick-badges {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .quick-badge {
+      background: var(--guide-soft);
+      border: 1px solid #ffd9bf;
+      color: #7a3f16;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field { margin-bottom: 12px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: .88rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .required { color: #dc2626; }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 11px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: .92rem;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #ff9a5c;
+      box-shadow: 0 0 0 3px rgba(255,102,0,.15);
+    }
+
+    .conditional-section {
+      margin-top: 8px;
+      border-top: 1px dashed #f2dac9;
+      padding-top: 12px;
+    }
+
+    .form-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-main {
+      background: var(--guide-primary);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-main:hover { background: var(--guide-primary-dark); color: #fff; }
+
+    .btn-soft {
+      background: var(--guide-soft);
+      color: #7a3f16;
+      border: 1px solid #ffd9bf;
+    }
+
+    .btn-soft:hover { background: #ffe9d7; color: #7a3f16; }
+
+    .flash-wrap { max-width: 1240px; margin: 24px auto -12px; padding: 0 18px; }
+    .flash {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border: 1px solid transparent;
+    }
+    .flash-success { background: #e7f8ee; color: #1f7a47; border-color: #bfe8cf; }
+    .flash-error { background: #fdeceb; color: #b42318; border-color: #f7c5c2; }
+
+    @media (max-width: 980px) {
+      .guide-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .field-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-wrap">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="guide-page">
+  <section class="guide-hero">
+    <div class="guide-wrap">
+      <h1>Guide Me - Personalized Admission Support</h1>
+      <p>Career direction, exam strategy, branch/college selection aur admission planning ke liye apna profile submit karein. Team aapko suitable guidance flow share karegi.</p>
+    </div>
+  </section>
+
+  <section class="guide-main">
+    <div class="guide-wrap">
+      <div class="guide-grid">
+        <aside class="guide-card">
+          <h3 class="card-head">How It Works</h3>
+          <ol class="guide-list">
+            <li>Basic profile details fill karein.</li>
+            <li>Requirement type select karein (Career / Admission / Other).</li>
+            <li>Relevant academic inputs submit karein.</li>
+            <li>Team aapse connect karke next-step plan guide karegi.</li>
+          </ol>
+
+          <h3 class="card-head" style="margin-top:14px;">Best For</h3>
+          <div class="quick-badges">
+            <span class="quick-badge">10th & 12th</span>
+            <span class="quick-badge">CET / JEE / NEET</span>
+            <span class="quick-badge">College Shortlist</span>
+            <span class="quick-badge">Career Clarity</span>
+          </div>
+        </aside>
+
+        <section class="form-card">
+          <h3 class="card-head">Registration Form</h3>
+          <form action="{{ url_for('guide_me') }}" method="POST">
+            <div class="field-grid">
+              <div class="field">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="full_name" required placeholder="Enter Full Name">
+              </div>
+
+              <div class="field">
+                <label>WhatsApp No. <span class="required">*</span></label>
+                <input type="text" name="whatsapp" required placeholder="10 Digit Number" maxlength="10" pattern="\d{10}">
+              </div>
+
+              <div class="field">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" name="email" required placeholder="example@gmail.com">
+              </div>
+
+              <div class="field">
+                <label>Address <span class="required">*</span></label>
+                <input type="text" name="address" required placeholder="Your Address">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Requirement Type <span class="required">*</span></label>
+              <select id="requirementSelect" name="requirement_type" required onchange="toggleSections()">
+                <option value="">--Select--</option>
+                <option value="career">Career Aptitude Test</option>
+                <option value="admission">Admission Guidance</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div id="careerSection" class="conditional-section" style="display:none;">
+              <div class="field">
+                <label>I'm In</label>
+                <select name="career_level">
+                  <option value="">--Select--</option>
+                  <option value="10th">10th</option>
+                  <option value="12th">12th</option>
+                  <option value="Graduate">Graduate</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Any Message (max ~50 words)</label>
+                <textarea name="career_msg" maxlength="300" placeholder="Any message for us"></textarea>
+              </div>
+            </div>
+
+            <div id="admissionSection" class="conditional-section" style="display:none;">
+              <div class="field-grid">
+                <div class="field">
+                  <label>Course</label>
+                  <select name="adm_course">
+                    <option value="">--Select Course--</option>
+                    <option>Engineering</option>
+                    <option>Medical</option>
+                    <option>Pharmacy</option>
+                    <option>MBA</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>12th Percentage</label>
+                  <input type="number" name="adm_12th" step="0.01" min="0" max="100" placeholder="%">
+                </div>
+              </div>
+            </div>
+
+            <div id="otherSection" class="conditional-section" style="display:none;">
+              <div class="field">
+                <label>Your Message</label>
+                <textarea name="other_msg" maxlength="500" placeholder="Any Message for us"></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-main">Submit Form</button>
+              <a href="{{ url_for('index') }}" class="btn-main btn-soft">Back to Home</a>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+  function toggleSections() {
+    const val = document.getElementById('requirementSelect').value;
+    document.getElementById('careerSection').style.display = (val === 'career') ? 'block' : 'none';
+    document.getElementById('admissionSection').style.display = (val === 'admission') ? 'block' : 'none';
+    document.getElementById('otherSection').style.display = (val === 'other') ? 'block' : 'none';
+  }
+</script>
+{% endblock %}

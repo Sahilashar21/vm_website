@@ -1,89 +1,249 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Epaper | Vidyarthi Mitra">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
-    <title>Epaper | Vidyarthi Mitra</title>
+{% extends "base.html" %}
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+{% block title %}Epaper | Vidyarthi Mitra{% endblock %}
 
-    <style>
-        :root { --primary:#ff6b35; --dark:#1e293b; --muted:#64748b; --line:#e2e8f0; --soft:#f8fafc; }
-        body { font-family:'Inter',sans-serif; color:var(--dark); background:#fff; }
-        h1,h2,h3 { font-family:'Poppins',sans-serif; font-weight:700; }
-        .main-nav { border-bottom:1px solid var(--line); background:#fff; position:sticky; top:0; z-index:1000; }
-        .navbar-brand img{ height:42px; }
-        .navbar-nav .nav-link { color:var(--dark); font-weight:600; margin:0 6px; padding:8px 10px !important; }
-        .navbar-nav .nav-link:hover,.navbar-nav .nav-link.active{ color:var(--primary); }
-        .hero{ background:linear-gradient(135deg,#e65c00,#ff8a33); color:#fff; padding:54px 0; }
-        .hero p{ margin:0; opacity:.95; max-width:880px; }
-        .section-pad{ padding:30px 0 50px; background:var(--soft); }
-        .grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-        .card{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 8px 20px rgba(15,23,42,.05); }
-        .chip{ display:inline-block; border-radius:999px; background:#fff1eb; color:#b94709; font-size:.72rem; font-weight:700; padding:4px 8px; margin-bottom:8px; }
-        .card h3{ color:#e65c00; font-size:1rem; line-height:1.4; margin:0 0 8px; }
-        .card p{ margin:0; color:#334155; font-size:.92rem; }
-        .card a{ color:var(--primary); font-weight:700; text-decoration:none; }
-        .quick-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:16px; }
-        .quick-grid a{ background:#fff; border:1px solid var(--line); border-radius:10px; text-align:center; padding:10px; text-decoration:none; color:#e65c00; font-weight:700; }
-        .note{ margin-top:16px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; color:var(--muted); }
-        footer { background:#0b1f48; color:#e2e8f0; padding:24px 0; margin-top:32px; }
-        @media (max-width:992px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr));} .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
-        @media (max-width:640px){ .grid,.quick-grid{grid-template-columns:1fr;} }
-    </style>
-</head>
-<body>
-<header class="main-nav">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('universities') }}">Universities</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('colleges') }}">Colleges</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('courses') }}">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admissions') }}">Admissions</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('epaper') }}">Epaper</a></li>
-                </ul>
+{% block page_styles %}
+<style>
+    :root {
+        --epaper-primary: #ff6600;
+        --epaper-primary-dark: #e55a00;
+        --epaper-bg: #f8fafc;
+        --epaper-line: #e5e7eb;
+        --epaper-text: #1f2937;
+        --epaper-muted: #64748b;
+    }
+
+    .epaper-page {
+        background: var(--epaper-bg);
+        color: var(--epaper-text);
+    }
+
+    .epaper-wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 18px;
+    }
+
+    .epaper-hero {
+        background: linear-gradient(135deg, #e65c00, #ff8a33);
+        color: #fff;
+        padding: 52px 0;
+    }
+
+    .epaper-hero h1 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 700;
+    }
+
+    .epaper-hero p {
+        margin: 0;
+        max-width: 860px;
+        opacity: .95;
+    }
+
+    .epaper-main {
+        padding: 30px 0 52px;
+    }
+
+    .section-head {
+        margin: 0 0 12px;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--epaper-text);
+    }
+
+    .edition-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .edition-card {
+        background: #fff;
+        border: 1px solid var(--epaper-line);
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 8px 20px rgba(15,23,42,.06);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .edition-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(15,23,42,.1);
+    }
+
+    .edition-tag {
+        display: inline-block;
+        font-size: .72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .35px;
+        color: #fff;
+        background: var(--epaper-primary);
+        border-radius: 999px;
+        padding: 4px 9px;
+        margin-bottom: 8px;
+    }
+
+    .edition-card h3 {
+        margin: 0 0 8px;
+        color: var(--epaper-primary-dark);
+        font-size: 1.02rem;
+        line-height: 1.42;
+    }
+
+    .edition-card p {
+        margin: 0;
+        color: #374151;
+        font-size: .93rem;
+        line-height: 1.5;
+    }
+
+    .epaper-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: var(--epaper-primary);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .epaper-link:hover {
+        color: var(--epaper-primary-dark);
+    }
+
+    .quick-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .quick-item {
+        display: block;
+        text-align: center;
+        background: #fff;
+        border: 1px solid var(--epaper-line);
+        border-radius: 10px;
+        padding: 11px 10px;
+        color: var(--epaper-primary-dark);
+        text-decoration: none;
+        font-weight: 700;
+        transition: background .2s ease, transform .2s ease;
+    }
+
+    .quick-item:hover {
+        background: #fff4eb;
+        transform: translateY(-1px);
+        color: var(--epaper-primary-dark);
+    }
+
+    .epaper-note {
+        margin-top: 12px;
+        background: #fff;
+        border: 1px solid var(--epaper-line);
+        border-radius: 12px;
+        padding: 14px;
+        color: var(--epaper-muted);
+        font-size: .92rem;
+    }
+
+    @media (max-width: 992px) {
+        .edition-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .quick-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .edition-grid,
+        .quick-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .epaper-hero {
+            padding: 44px 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="epaper-page">
+    <section class="epaper-hero">
+        <div class="epaper-wrap">
+            <h1>Vidyarthi Mitra Epaper</h1>
+            <p>Education news, admission updates, entrance alerts, career guidance highlights aur weekly student-focused editions ek jagah.</p>
+        </div>
+    </section>
+
+    <section class="epaper-main">
+        <div class="epaper-wrap">
+            <h2 class="section-head">Recent Epaper Editions</h2>
+            <div class="edition-grid">
+                <article class="edition-card">
+                    <span class="edition-tag">Weekly</span>
+                    <h3>Admission Alert Special Edition</h3>
+                    <p>Current admission rounds, deadlines, and counselling updates in one concise issue.</p>
+                    <a class="epaper-link" href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read Edition</a>
+                </article>
+
+                <article class="edition-card">
+                    <span class="edition-tag">Exam Focus</span>
+                    <h3>Entrance Exam Planner Edition</h3>
+                    <p>JEE, NEET, CUET aur state CET preparation timeline with key planning checkpoints.</p>
+                    <a class="epaper-link" href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read Edition</a>
+                </article>
+
+                <article class="edition-card">
+                    <span class="edition-tag">Careers</span>
+                    <h3>Career Guidance & Skill Trends</h3>
+                    <p>High-demand courses, emerging skills, and career decision support for students.</p>
+                    <a class="epaper-link" href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read Edition</a>
+                </article>
+
+                <article class="edition-card">
+                    <span class="edition-tag">Cut-Offs</span>
+                    <h3>Branch & College Trend Snapshot</h3>
+                    <p>Previous-year cut-off trends and shortlist insights for key colleges and branches.</p>
+                    <a class="epaper-link" href="{{ url_for('cutoffs') }}">Check Cut-Offs</a>
+                </article>
+
+                <article class="edition-card">
+                    <span class="edition-tag">Mock Tests</span>
+                    <h3>Practice & Performance Edition</h3>
+                    <p>Mock test strategy, attempt analysis tips, and score improvement recommendations.</p>
+                    <a class="epaper-link" href="{{ url_for('mock_exams') }}">Go to Mock Exams</a>
+                </article>
+
+                <article class="edition-card">
+                    <span class="edition-tag">Counselling</span>
+                    <h3>Expert Guidance Desk</h3>
+                    <p>Form-filling, option selection, and admission planning support updates for students.</p>
+                    <a class="epaper-link" href="{{ url_for('guide_me') }}">Get Guidance</a>
+                </article>
             </div>
-        </nav>
-    </div>
-</header>
 
-<section class="hero"><div class="container"><h1>Vidyarthi Mitra Epaper</h1><p>Education, admissions, exam and career updates in digital format.</p></div></section>
+            <h2 class="section-head">Quick Access</h2>
+            <div class="quick-grid">
+                <a class="quick-item" href="{{ url_for('news') }}">News</a>
+                <a class="quick-item" href="{{ url_for('admissions') }}">Admissions</a>
+                <a class="quick-item" href="{{ url_for('exams') }}">Entrance Exams</a>
+                <a class="quick-item" href="{{ url_for('mock_exams') }}">Mock Exams</a>
+                <a class="quick-item" href="{{ url_for('cutoffs') }}">Cut-Offs</a>
+                <a class="quick-item" href="{{ url_for('universities') }}">Universities</a>
+                <a class="quick-item" href="{{ url_for('colleges') }}">Colleges</a>
+                <a class="quick-item" href="{{ url_for('courses') }}">Courses</a>
+            </div>
 
-<section class="section-pad">
-    <div class="container">
-        <h2 class="mb-3">Recent Editions</h2>
-        <div class="grid">
-            <article class="card"><span class="chip">Weekly</span><h3>Admission Alert Special</h3><p>Current admission openings and timeline focus. <a href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read</a></p></article>
-            <article class="card"><span class="chip">Exam Focus</span><h3>Entrance Planner</h3><p>Exam dates and preparation checklist summary. <a href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read</a></p></article>
-            <article class="card"><span class="chip">Careers</span><h3>Skill & Career Trends</h3><p>Trending fields and student guidance updates. <a href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read</a></p></article>
+            <div class="epaper-note">
+                Official ePaper portal direct access: <a href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">epaper.vidyarthimitra.org</a>
+            </div>
         </div>
-
-        <h2 class="mt-4 mb-2">Quick Access</h2>
-        <div class="quick-grid">
-            <a href="{{ url_for('news') }}">News</a>
-            <a href="{{ url_for('admissions') }}">Admissions</a>
-            <a href="{{ url_for('exams') }}">Entrance Exams</a>
-            <a href="{{ url_for('mock_exams') }}">Mock Exams</a>
-            <a href="{{ url_for('universities') }}">Universities</a>
-            <a href="{{ url_for('colleges') }}">Colleges</a>
-            <a href="{{ url_for('courses') }}">Courses</a>
-            <a href="{{ url_for('guide') }}">Guide</a>
-        </div>
-
-        <div class="note">Official portal: <a href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">epaper.vidyarthimitra.org</a></div>
-    </div>
-</section>
-
-<footer><div class="container small">© VidyarthiMitra.org 2026</div></footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </section>
+</div>
+{% endblock %}

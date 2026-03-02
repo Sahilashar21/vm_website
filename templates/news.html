@@ -1,86 +1,248 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="News | Vidyarthi Mitra">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
-    <title>News | Vidyarthi Mitra</title>
+{% extends "base.html" %}
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+{% block title %}News | Vidyarthi Mitra{% endblock %}
 
-    <style>
-        :root { --primary:#ff6b35; --dark:#1e293b; --muted:#64748b; --line:#e2e8f0; --soft:#f8fafc; }
-        body { font-family:'Inter',sans-serif; color:var(--dark); background:#fff; }
-        h1,h2,h3 { font-family:'Poppins',sans-serif; font-weight:700; }
-        .main-nav { border-bottom:1px solid var(--line); background:#fff; position:sticky; top:0; z-index:1000; }
-        .navbar-brand img{ height:42px; }
-        .navbar-nav .nav-link { color:var(--dark); font-weight:600; margin:0 6px; padding:8px 10px !important; }
-        .navbar-nav .nav-link:hover,.navbar-nav .nav-link.active{ color:var(--primary); }
-        .hero{ background:linear-gradient(135deg,#e65c00,#ff8a33); color:#fff; padding:54px 0; }
-        .hero p{ margin:0; opacity:.95; max-width:880px; }
-        .section-pad{ padding:30px 0 50px; background:var(--soft); }
-        .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-        .news-card{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 8px 20px rgba(15,23,42,.05); }
-        .tag{ display:inline-block; border-radius:999px; background:#fff1eb; color:#b94709; font-size:.72rem; font-weight:700; padding:4px 8px; margin-bottom:8px; }
-        .news-card h3{ color:#e65c00; font-size:1rem; line-height:1.4; margin:0 0 8px; }
-        .news-card p{ margin:0; color:#334155; font-size:.92rem; }
-        .news-card a{ color:var(--primary); font-weight:700; text-decoration:none; }
-        .quick-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:16px; }
-        .quick-grid a{ background:#fff; border:1px solid var(--line); border-radius:10px; text-align:center; padding:10px; text-decoration:none; color:#e65c00; font-weight:700; }
-        footer { background:#0b1f48; color:#e2e8f0; padding:24px 0; margin-top:32px; }
-        @media (max-width:992px){ .news-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
-        @media (max-width:640px){ .news-grid,.quick-grid{grid-template-columns:1fr;} }
-    </style>
-</head>
-<body>
-<header class="main-nav">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='logo.png') }}" alt="Vidyarthi Mitra"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('universities') }}">Universities</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('colleges') }}">Colleges</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('courses') }}">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admissions') }}">Admissions</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('news') }}">News</a></li>
-                </ul>
+{% block page_styles %}
+<style>
+    :root {
+        --news-primary: #ff6600;
+        --news-primary-dark: #e55a00;
+        --news-bg: #f8fafc;
+        --news-line: #e5e7eb;
+        --news-text: #1f2937;
+        --news-muted: #64748b;
+    }
+
+    .news-page {
+        background: var(--news-bg);
+        color: var(--news-text);
+    }
+
+    .news-wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 18px;
+    }
+
+    .news-hero {
+        background: linear-gradient(135deg, #e65c00, #ff8a33);
+        color: #fff;
+        padding: 52px 0;
+    }
+
+    .news-hero h1 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 700;
+    }
+
+    .news-hero p {
+        margin: 0;
+        max-width: 860px;
+        opacity: .95;
+    }
+
+    .news-main {
+        padding: 30px 0 52px;
+    }
+
+    .section-head {
+        margin: 0 0 12px;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--news-text);
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .news-card {
+        background: #fff;
+        border: 1px solid var(--news-line);
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 8px 20px rgba(15,23,42,.06);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .news-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(15,23,42,.1);
+    }
+
+    .news-tag {
+        display: inline-block;
+        font-size: .72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .35px;
+        color: #fff;
+        background: var(--news-primary);
+        border-radius: 999px;
+        padding: 4px 9px;
+        margin-bottom: 8px;
+    }
+
+    .news-card h3 {
+        margin: 0 0 8px;
+        color: var(--news-primary-dark);
+        font-size: 1.02rem;
+        line-height: 1.42;
+    }
+
+    .news-card p {
+        margin: 0;
+        color: #374151;
+        font-size: .93rem;
+        line-height: 1.5;
+    }
+
+    .news-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: var(--news-primary);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .news-link:hover {
+        color: var(--news-primary-dark);
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .category-item {
+        display: block;
+        text-align: center;
+        background: #fff;
+        border: 1px solid var(--news-line);
+        border-radius: 10px;
+        padding: 11px 10px;
+        color: var(--news-primary-dark);
+        text-decoration: none;
+        font-weight: 700;
+        transition: background .2s ease, transform .2s ease;
+    }
+
+    .category-item:hover {
+        background: #fff4eb;
+        transform: translateY(-1px);
+        color: var(--news-primary-dark);
+    }
+
+    .news-note {
+        margin-top: 18px;
+        background: #fff;
+        border: 1px solid var(--news-line);
+        border-radius: 12px;
+        padding: 14px;
+        color: var(--news-muted);
+        font-size: .92rem;
+    }
+
+    @media (max-width: 992px) {
+        .news-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .news-grid,
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .news-hero {
+            padding: 44px 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="news-page">
+    <section class="news-hero">
+        <div class="news-wrap">
+            <h1>Education News & Updates</h1>
+            <p>Admissions, exam notifications, scholarship alerts, aur academic announcements ka quick and reliable update hub.</p>
+        </div>
+    </section>
+
+    <section class="news-main">
+        <div class="news-wrap">
+            <h2 class="section-head">Latest News</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <span class="news-tag">Admissions</span>
+                    <h3>Top engineering colleges begin first round counselling updates</h3>
+                    <p>State and institute-level counselling windows open ho rahe hain. Documents aur preferences ready rakhna important hai.</p>
+                    <a class="news-link" href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Entrance Exams</span>
+                    <h3>Major entrance exam application deadlines announced</h3>
+                    <p>JEE, NEET, CUET aur state CET notifications update hue hain. Last date miss na ho, official portal regularly check karein.</p>
+                    <a class="news-link" href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Scholarships</span>
+                    <h3>New scholarship schemes for UG and PG students released</h3>
+                    <p>Merit-based aur need-based scholarships ke forms active hain. Eligibility criteria aur timeline verify karna zaroori hai.</p>
+                    <a class="news-link" href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Mock Exams</span>
+                    <h3>Practice test series schedule updated for current session</h3>
+                    <p>Weekly mock schedules revise hue hain jisse students ko exam-like practice aur better time management support mile.</p>
+                    <a class="news-link" href="{{ url_for('mock_exams') }}">Go to Mock Exams</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Cut-Offs</span>
+                    <h3>Previous year trends published for popular branches</h3>
+                    <p>Branch-wise and category-wise trend data shortlist process mein better decision making mein help karta hai.</p>
+                    <a class="news-link" href="{{ url_for('cutoffs') }}">Check Cut-Offs</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Career Guidance</span>
+                    <h3>Career counselling support slots now open</h3>
+                    <p>Students ke liye stream selection, exam planning aur admission support ke guided sessions available hain.</p>
+                    <a class="news-link" href="{{ url_for('guide_me') }}">Get Guidance</a>
+                </article>
             </div>
-        </nav>
-    </div>
-</header>
 
-<section class="hero"><div class="container"><h1>Education News & Updates</h1><p>Latest admission alerts, exam notifications and student opportunities.</p></div></section>
+            <h2 class="section-head">Explore By Category</h2>
+            <div class="category-grid">
+                <a class="category-item" href="{{ url_for('admissions') }}">Admissions</a>
+                <a class="category-item" href="{{ url_for('exams') }}">Entrance Exams</a>
+                <a class="category-item" href="{{ url_for('mock_exams') }}">Mock Exams</a>
+                <a class="category-item" href="{{ url_for('cutoffs') }}">Cut-Offs</a>
+                <a class="category-item" href="{{ url_for('universities') }}">Universities</a>
+                <a class="category-item" href="{{ url_for('colleges') }}">Colleges</a>
+                <a class="category-item" href="{{ url_for('courses') }}">Courses</a>
+                <a class="category-item" href="{{ url_for('guide_me') }}">Guide Me</a>
+            </div>
 
-<section class="section-pad">
-    <div class="container">
-        <h2 class="mb-3">Latest Highlights</h2>
-        <div class="news-grid">
-            <article class="news-card"><span class="tag">Admissions</span><h3>Top colleges counselling update released</h3><p>Round-wise schedule and document checks update hue hain. <a href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a></p></article>
-            <article class="news-card"><span class="tag">Exams</span><h3>Entrance form deadlines announced</h3><p>JEE, NEET, CUET and CET applicants ke liye fresh notifications. <a href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a></p></article>
-            <article class="news-card"><span class="tag">Scholarship</span><h3>UG/PG scholarship windows active</h3><p>Eligibility and application dates verify karke apply karein. <a href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a></p></article>
+            <div class="news-note">
+                Latest and official updates ke liye aap hamare primary news source ko bhi directly follow kar sakte hain: <a href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">vidyarthimitra.org/news</a>
+            </div>
         </div>
-
-        <h2 class="mt-4 mb-2">Explore</h2>
-        <div class="quick-grid">
-            <a href="{{ url_for('admissions') }}">Admissions</a>
-            <a href="{{ url_for('exams') }}">Entrance Exams</a>
-            <a href="{{ url_for('mock_exams') }}">Mock Exams</a>
-            <a href="{{ url_for('epaper') }}">Epaper</a>
-            <a href="{{ url_for('universities') }}">Universities</a>
-            <a href="{{ url_for('colleges') }}">Colleges</a>
-            <a href="{{ url_for('courses') }}">Courses</a>
-            <a href="{{ url_for('guide') }}">Guide</a>
-        </div>
-    </div>
-</section>
-
-<footer><div class="container small">© VidyarthiMitra.org 2026</div></footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </section>
+</div>
+{% endblock %}
