@@ -144,7 +144,7 @@ def blog():
 
 @app.route("/epaper")
 def epaper():
-    return render_template("index.html")  # Placeholder
+    return render_template("epaper.html")
 
 
 @app.route("/universities")
@@ -212,11 +212,11 @@ def cutoffs():
 
 @app.route("/admissions")
 def admissions():
-    return render_template("index.html")  # Placeholder
+    return render_template("admission.html")
 
 @app.route("/news")
 def news():
-    return render_template("index.html")  # Placeholder
+    return render_template("news.html")
 
 
 @app.route("/articles")

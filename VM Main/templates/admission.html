@@ -1,0 +1,87 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admissions 2024-25 | Vidyarthi Mitra{% endblock %}
+
+{% block page_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admission.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admission-page">
+    <header class="admission-header">
+        <div class="admission-wrap">
+            <h1>Admissions 2024-25</h1>
+            <p>Find trending admission notices, important links, and expert guidance for all courses and colleges.</p>
+        </div>
+    </header>
+
+    <section class="admission-main">
+        <div class="admission-wrap">
+            <section class="admission-cards-section">
+                <div class="section-header">
+                    <h2>Trending Admission Notices</h2>
+                </div>
+                <div class="admission-cards">
+                    <div class="admission-card">
+                        <h3>Bachelor of Engineering and Technology Admissions</h3>
+                        <p>Engineering, Technology courses for 2024-25. <a href="https://vidyarthimitra.org/admission/Bachelor-of-Engineering-and-Technology-Admissions-2021-22" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>Hotel Management & Catering Technology Admissions</h3>
+                        <p>Hotel Management, Catering Technology programs. <a href="https://vidyarthimitra.org/admission/Bachelor-of-Hotel-Management-and-Catering-Technology-Admissions-2021-2022" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>National Institute of Fashion Technology Admissions</h3>
+                        <p>Fashion Technology, Design courses. <a href="https://vidyarthimitra.org/admission/National-Institute-of-Fashion-Technology-admissions-2021:-Apply-Now" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>BE / BTech Admission Process</h3>
+                        <p>Admission process for BE/BTech. <a href="https://vidyarthimitra.org/admission/B.E.-B.-Tech.-for-Academic-Year-2020-21" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>MA Admissions at TISS</h3>
+                        <p>MA programs at TISS. <a href="https://vidyarthimitra.org/admission/Admissions-Open-for-MA-2021-at-TISS:-Apply" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                    <div class="admission-card">
+                        <h3>Indian Institute of Skill - Factory Automation Course</h3>
+                        <p>Skill development, automation course. <a href="https://vidyarthimitra.org/admission/Indian-Institute-of-Skill-invites-applications-for-factory-automation-course-2020" target="_blank" rel="noopener">Read More</a></p>
+                    </div>
+                </div>
+                <div class="more-trending">
+                    <a href="https://vidyarthimitra.org/admission" target="_blank" rel="noopener">View All Admissions</a>
+                </div>
+            </section>
+
+            <section class="quick-links-section">
+                <div class="section-header">
+                    <h2>Quick Links</h2>
+                </div>
+                <div class="quick-links-grid">
+                    <a href="{{ url_for('universities') }}" class="quick-link">Universities</a>
+                    <a href="{{ url_for('colleges') }}" class="quick-link">Colleges</a>
+                    <a href="{{ url_for('courses') }}" class="quick-link">Courses</a>
+                    <a href="{{ url_for('exams') }}" class="quick-link">Entrance Exams</a>
+                    <a href="{{ url_for('mock_exams') }}" class="quick-link">Mock Exams</a>
+                    <a href="{{ url_for('cutoffs') }}" class="quick-link">Cut-Offs</a>
+                    <a href="{{ url_for('guide_me') }}" class="quick-link">Guide Me</a>
+                </div>
+            </section>
+
+            <section class="expert-contact-section">
+                <div class="section-header">
+                    <h2>Contact & Support</h2>
+                </div>
+                <div class="contact-details">
+                    <p>For expert advice and help, reach out:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:contact@vidyarthimitra.org">contact@vidyarthimitra.org</a></li>
+                        <li>Phone: <a href="tel:7720025900">+91 77200 25900</a>, <a href="tel:7720081400">+91 77200 81400</a></li>
+                        <li>WhatsApp: <a href="https://api.whatsapp.com/send?phone=917720025900&text=Hello,%20Vidyarthimitra.org,%20My%20Name%20is%20(........),%20My%20City%20(........),%20I%20want%20information%20about%20(........)%20Thank%20You" target="_blank" rel="noopener">Chat on WhatsApp</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </section>
+</div>
+{% endblock %}

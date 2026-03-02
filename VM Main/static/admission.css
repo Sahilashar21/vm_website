@@ -1,0 +1,190 @@
+
+.admission-page {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #f8fafc;
+    color: #2f2f2f;
+}
+
+.admission-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 18px;
+}
+
+.admission-header {
+    background: linear-gradient(135deg, #e65c00, #ff8a33);
+    color: #fff;
+    padding: 54px 0;
+}
+
+.admission-header h1 {
+    margin: 0 0 10px;
+    font-size: clamp(1.95rem, 4vw, 2.7rem);
+    font-weight: 700;
+}
+
+.admission-header p {
+    margin: 0;
+    max-width: 860px;
+    opacity: .95;
+}
+
+.admission-main {
+    padding: 30px 0 52px;
+}
+
+.admission-cards-section,
+.quick-links-section,
+.expert-contact-section {
+    margin-bottom: 28px;
+}
+
+.section-header {
+    margin-bottom: 12px;
+}
+
+.section-header h2 {
+    color: #1f2937;
+    font-size: 1.35rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.admission-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.admission-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(15,23,42,.06);
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+    border-left: 4px solid #ff6600;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.admission-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(15,23,42,.1);
+}
+
+.admission-card h3 {
+    margin: 0 0 8px;
+    color: #e65c00;
+    font-size: 1.02rem;
+    line-height: 1.4;
+}
+
+.admission-card p {
+    margin: 0;
+    color: #374151;
+    font-size: .94rem;
+    line-height: 1.5;
+}
+
+.admission-card a {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.admission-card a:hover {
+    color: #d95500;
+}
+
+.more-trending {
+    margin-top: 14px;
+    text-align: right;
+}
+
+.more-trending a {
+    color: #e65c00;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.more-trending a:hover {
+    color: #c44e00;
+}
+
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.quick-link {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(15,23,42,.06);
+    border: 1px solid #e5e7eb;
+    padding: 11px 12px;
+    color: #e65c00;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.quick-link:hover {
+    background: #fff4eb;
+    color: #d95500;
+    transform: translateY(-1px);
+}
+
+.contact-details {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(15,23,42,.06);
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+}
+
+.contact-details p {
+    margin: 0 0 8px;
+    color: #374151;
+}
+
+.contact-details ul {
+    padding-left: 18px;
+    margin: 0;
+}
+
+.contact-details li {
+    margin-bottom: 7px;
+    color: #374151;
+}
+
+.contact-details a {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-details a:hover {
+    color: #d95500;
+}
+
+@media (max-width: 992px) {
+    .admission-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quick-links-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .admission-header {
+        padding: 42px 0;
+    }
+
+    .admission-cards,
+    .quick-links-grid {
+        grid-template-columns: 1fr;
+    }
+}

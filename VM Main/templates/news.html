@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}News | Vidyarthi Mitra{% endblock %}
+
+{% block page_styles %}
+<style>
+    :root {
+        --news-primary: #ff6600;
+        --news-primary-dark: #e55a00;
+        --news-bg: #f8fafc;
+        --news-line: #e5e7eb;
+        --news-text: #1f2937;
+        --news-muted: #64748b;
+    }
+
+    .news-page {
+        background: var(--news-bg);
+        color: var(--news-text);
+    }
+
+    .news-wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 18px;
+    }
+
+    .news-hero {
+        background: linear-gradient(135deg, #e65c00, #ff8a33);
+        color: #fff;
+        padding: 52px 0;
+    }
+
+    .news-hero h1 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 700;
+    }
+
+    .news-hero p {
+        margin: 0;
+        max-width: 860px;
+        opacity: .95;
+    }
+
+    .news-main {
+        padding: 30px 0 52px;
+    }
+
+    .section-head {
+        margin: 0 0 12px;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--news-text);
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .news-card {
+        background: #fff;
+        border: 1px solid var(--news-line);
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 8px 20px rgba(15,23,42,.06);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .news-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(15,23,42,.1);
+    }
+
+    .news-tag {
+        display: inline-block;
+        font-size: .72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .35px;
+        color: #fff;
+        background: var(--news-primary);
+        border-radius: 999px;
+        padding: 4px 9px;
+        margin-bottom: 8px;
+    }
+
+    .news-card h3 {
+        margin: 0 0 8px;
+        color: var(--news-primary-dark);
+        font-size: 1.02rem;
+        line-height: 1.42;
+    }
+
+    .news-card p {
+        margin: 0;
+        color: #374151;
+        font-size: .93rem;
+        line-height: 1.5;
+    }
+
+    .news-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: var(--news-primary);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .news-link:hover {
+        color: var(--news-primary-dark);
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .category-item {
+        display: block;
+        text-align: center;
+        background: #fff;
+        border: 1px solid var(--news-line);
+        border-radius: 10px;
+        padding: 11px 10px;
+        color: var(--news-primary-dark);
+        text-decoration: none;
+        font-weight: 700;
+        transition: background .2s ease, transform .2s ease;
+    }
+
+    .category-item:hover {
+        background: #fff4eb;
+        transform: translateY(-1px);
+        color: var(--news-primary-dark);
+    }
+
+    .news-note {
+        margin-top: 18px;
+        background: #fff;
+        border: 1px solid var(--news-line);
+        border-radius: 12px;
+        padding: 14px;
+        color: var(--news-muted);
+        font-size: .92rem;
+    }
+
+    @media (max-width: 992px) {
+        .news-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .news-grid,
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .news-hero {
+            padding: 44px 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="news-page">
+    <section class="news-hero">
+        <div class="news-wrap">
+            <h1>Education News & Updates</h1>
+            <p>Admissions, exam notifications, scholarship alerts, aur academic announcements ka quick and reliable update hub.</p>
+        </div>
+    </section>
+
+    <section class="news-main">
+        <div class="news-wrap">
+            <h2 class="section-head">Latest News</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <span class="news-tag">Admissions</span>
+                    <h3>Top engineering colleges begin first round counselling updates</h3>
+                    <p>State and institute-level counselling windows open ho rahe hain. Documents aur preferences ready rakhna important hai.</p>
+                    <a class="news-link" href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Entrance Exams</span>
+                    <h3>Major entrance exam application deadlines announced</h3>
+                    <p>JEE, NEET, CUET aur state CET notifications update hue hain. Last date miss na ho, official portal regularly check karein.</p>
+                    <a class="news-link" href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Scholarships</span>
+                    <h3>New scholarship schemes for UG and PG students released</h3>
+                    <p>Merit-based aur need-based scholarships ke forms active hain. Eligibility criteria aur timeline verify karna zaroori hai.</p>
+                    <a class="news-link" href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">Read More</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Mock Exams</span>
+                    <h3>Practice test series schedule updated for current session</h3>
+                    <p>Weekly mock schedules revise hue hain jisse students ko exam-like practice aur better time management support mile.</p>
+                    <a class="news-link" href="{{ url_for('mock_exams') }}">Go to Mock Exams</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Cut-Offs</span>
+                    <h3>Previous year trends published for popular branches</h3>
+                    <p>Branch-wise and category-wise trend data shortlist process mein better decision making mein help karta hai.</p>
+                    <a class="news-link" href="{{ url_for('cutoffs') }}">Check Cut-Offs</a>
+                </article>
+
+                <article class="news-card">
+                    <span class="news-tag">Career Guidance</span>
+                    <h3>Career counselling support slots now open</h3>
+                    <p>Students ke liye stream selection, exam planning aur admission support ke guided sessions available hain.</p>
+                    <a class="news-link" href="{{ url_for('guide_me') }}">Get Guidance</a>
+                </article>
+            </div>
+
+            <h2 class="section-head">Explore By Category</h2>
+            <div class="category-grid">
+                <a class="category-item" href="{{ url_for('admissions') }}">Admissions</a>
+                <a class="category-item" href="{{ url_for('exams') }}">Entrance Exams</a>
+                <a class="category-item" href="{{ url_for('mock_exams') }}">Mock Exams</a>
+                <a class="category-item" href="{{ url_for('cutoffs') }}">Cut-Offs</a>
+                <a class="category-item" href="{{ url_for('universities') }}">Universities</a>
+                <a class="category-item" href="{{ url_for('colleges') }}">Colleges</a>
+                <a class="category-item" href="{{ url_for('courses') }}">Courses</a>
+                <a class="category-item" href="{{ url_for('guide_me') }}">Guide Me</a>
+            </div>
+
+            <div class="news-note">
+                Latest and official updates ke liye aap hamare primary news source ko bhi directly follow kar sakte hain: <a href="https://vidyarthimitra.org/news" target="_blank" rel="noopener">vidyarthimitra.org/news</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
