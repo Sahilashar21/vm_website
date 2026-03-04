@@ -1,249 +1,919 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vidyarthi Mitra – E-Paper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='title.png') }}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-{% block title %}Epaper | Vidyarthi Mitra{% endblock %}
-
-{% block page_styles %}
-<style>
+  <style>
+    /* ── Variables ─────────────────────────────────── */
     :root {
-        --epaper-primary: #ff6600;
-        --epaper-primary-dark: #e55a00;
-        --epaper-bg: #f8fafc;
-        --epaper-line: #e5e7eb;
-        --epaper-text: #1f2937;
-        --epaper-muted: #64748b;
+      --orange:     #ff6600;
+      --orange-dim: #ff8533;
+      --navy:       #003d6b;
+      --ink:        #1a1a2e;
+      --paper:      #fdfaf5;
+      --paper2:     #f7f3ec;
+      --muted:      #7a7a8a;
+      --border:     #e2d9cc;
+      --shadow:     rgba(0,0,0,0.10);
     }
 
-    .epaper-page {
-        background: var(--epaper-bg);
-        color: var(--epaper-text);
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
     }
 
-    .epaper-wrap {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 18px;
+    /* ── HERO BANNER ───────────────────────────────── */
+    .hero {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      padding: 60px 24px 50px;
+      text-align: center;
     }
 
-    .epaper-hero {
-        background: linear-gradient(135deg, #e65c00, #ff8a33);
-        color: #fff;
-        padding: 52px 0;
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px);
     }
 
-    .epaper-hero h1 {
-        margin: 0 0 10px;
-        font-size: clamp(2rem, 4vw, 2.8rem);
-        font-weight: 700;
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,102,0,0.15);
+      border: 1px solid rgba(255,102,0,0.4);
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 22px;
     }
 
-    .epaper-hero p {
-        margin: 0;
-        max-width: 860px;
-        opacity: .95;
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
     }
 
-    .epaper-main {
-        padding: 30px 0 52px;
+    .hero h1 span { color: var(--orange); }
+
+    .hero-sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      font-weight: 300;
+      max-width: 500px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
     }
 
-    .section-head {
-        margin: 0 0 12px;
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: var(--epaper-text);
+    .hero-stats {
+      display: inline-flex;
+      gap: 32px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px 32px;
     }
 
-    .edition-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-bottom: 28px;
+    .stat-item { text-align: center; }
+    .stat-num  { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--orange); }
+    .stat-lbl  { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+    /* ── CONTROLS BAR ──────────────────────────────── */
+    .controls-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
 
-    .edition-card {
-        background: #fff;
-        border: 1px solid var(--epaper-line);
-        border-radius: 12px;
-        padding: 15px;
-        box-shadow: 0 8px 20px rgba(15,23,42,.06);
-        transition: transform .2s ease, box-shadow .2s ease;
+    .controls-inner {
+      max-width: 1160px;
+      margin: auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .edition-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 24px rgba(15,23,42,.1);
+    /* Search */
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--paper2);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      flex: 1;
+      min-width: 200px;
+      max-width: 320px;
+      transition: border-color 0.2s;
+    }
+    .search-box:focus-within { border-color: var(--orange); }
+    .search-box input {
+      border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      outline: none;
+      width: 100%;
+    }
+    .search-box i { color: var(--muted); font-size: 13px; }
+
+    /* Filter pills */
+    .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .pill:hover { border-color: var(--orange); color: var(--orange); }
+    .pill.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
     }
 
-    .edition-tag {
-        display: inline-block;
-        font-size: .72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .35px;
-        color: #fff;
-        background: var(--epaper-primary);
-        border-radius: 999px;
-        padding: 4px 9px;
-        margin-bottom: 8px;
+    /* Sort */
+    .sort-select {
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--paper2);
+      cursor: pointer;
+      outline: none;
+      margin-left: auto;
     }
 
-    .edition-card h3 {
-        margin: 0 0 8px;
-        color: var(--epaper-primary-dark);
-        font-size: 1.02rem;
-        line-height: 1.42;
+    /* ── MAIN GRID ─────────────────────────────────── */
+    .main {
+      max-width: 1160px;
+      margin: 48px auto;
+      padding: 0 24px;
     }
 
-    .edition-card p {
-        margin: 0;
-        color: #374151;
-        font-size: .93rem;
-        line-height: 1.5;
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .section-label h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .section-label .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-label .count {
+      background: var(--orange);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
     }
 
-    .epaper-link {
-        display: inline-block;
-        margin-top: 10px;
-        color: var(--epaper-primary);
-        font-weight: 700;
-        text-decoration: none;
+    .epaper-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 28px;
     }
 
-    .epaper-link:hover {
-        color: var(--epaper-primary-dark);
+    /* ── CARD ──────────────────────────────────────── */
+    .epaper-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: fadeUp 0.4s ease both;
+      cursor: pointer;
+      position: relative;
     }
 
-    .quick-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px;
-        margin-bottom: 16px;
+    .epaper-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.14);
     }
 
-    .quick-item {
-        display: block;
-        text-align: center;
-        background: #fff;
-        border: 1px solid var(--epaper-line);
-        border-radius: 10px;
-        padding: 11px 10px;
-        color: var(--epaper-primary-dark);
-        text-decoration: none;
-        font-weight: 700;
-        transition: background .2s ease, transform .2s ease;
+    .epaper-card.hidden { display: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .quick-item:hover {
-        background: #fff4eb;
-        transform: translateY(-1px);
-        color: var(--epaper-primary-dark);
+    /* Cover image area */
+    .card-cover {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a1a2e 0%, #003d6b 60%, #005a8d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    .epaper-note {
-        margin-top: 12px;
-        background: #fff;
-        border: 1px solid var(--epaper-line);
-        border-radius: 12px;
-        padding: 14px;
-        color: var(--epaper-muted);
-        font-size: .92rem;
+    .card-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.04) 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.04) 20px);
     }
 
-    @media (max-width: 992px) {
-        .edition-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+    .cover-logo {
+      font-family: 'Playfair Display', serif;
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+    .cover-logo span { color: var(--orange); }
 
-        .quick-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+    .cover-date-badge {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      z-index: 1;
     }
 
+    .edition-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    .edition-badge.marathi { background: #ffe8d6; color: #cc4400; }
+    .edition-badge.english { background: #d6eaff; color: #003d6b; }
+
+    .new-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 2;
+      animation: pulseNew 2s infinite;
+    }
+    @keyframes pulseNew {
+      0%,100% { opacity: 1; } 50% { opacity: 0.7; }
+    }
+
+    /* Decorative newspaper lines on cover */
+    .cover-lines {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 1;
+      opacity: 0.25;
+    }
+    .cover-lines span {
+      display: block;
+      height: 1px;
+      background: #fff;
+      margin-bottom: 5px;
+      border-radius: 1px;
+    }
+    .cover-lines span:nth-child(1) { width: 90%; }
+    .cover-lines span:nth-child(2) { width: 70%; }
+    .cover-lines span:nth-child(3) { width: 80%; }
+    .cover-lines span:nth-child(4) { width: 60%; }
+
+    /* Card body */
+    .card-body {
+      padding: 20px 20px 16px;
+    }
+
+    .card-week {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .card-meta i { font-size: 10px; }
+
+    /* Tags */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0 0;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--paper2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* Card footer */
+    .card-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-read {
+      flex: 1;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-read:hover { background: #e55a00; transform: translateY(-1px); }
+
+    .btn-download {
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+      font-size: 14px;
+    }
+    .btn-download:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── MODAL VIEWER ──────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.active { display: flex; }
+
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 20px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--navy), #005a8d);
+      padding: 28px 28px 24px;
+      border-radius: 20px 20px 0 0;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.25); }
+
+    .modal-eyebrow {
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .modal-subtitle { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    .modal-body { padding: 28px; }
+
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .info-chip {
+      background: var(--paper2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .info-chip .lbl { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .info-chip .val { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .modal-btn.primary { background: var(--orange); color: #fff; }
+    .modal-btn.primary:hover { background: #e55a00; }
+    .modal-btn.secondary { background: transparent; border: 1.5px solid var(--border); color: var(--ink); }
+    .modal-btn.secondary:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── EMPTY STATE ───────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      display: none;
+    }
+    .empty-state.visible { display: block; }
+    .empty-state i { font-size: 48px; color: var(--border); margin-bottom: 16px; }
+    .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+    .empty-state p  { color: var(--muted); font-size: 14px; }
+
+    /* ── LOAD MORE ─────────────────────────────────── */
+    .load-more-wrap {
+      text-align: center;
+      margin-top: 48px;
+    }
+    .btn-load {
+      padding: 13px 36px;
+      border: 2px solid var(--orange);
+      background: transparent;
+      color: var(--orange);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-load:hover { background: var(--orange); color: #fff; }
+
+    /* ── TOAST ─────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── RESPONSIVE ────────────────────────────────── */
     @media (max-width: 640px) {
-        .edition-grid,
-        .quick-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .epaper-hero {
-            padding: 44px 0;
-        }
+      .hero-stats { gap: 20px; padding: 14px 20px; }
+      .controls-inner { gap: 10px; }
+      .sort-select { margin-left: 0; }
+      .modal-info-grid { grid-template-columns: 1fr; }
+      .modal-actions { flex-direction: column; }
     }
-</style>
-{% endblock %}
+  </style>
+</head>
+<body>
 
-{% block content %}
-<div class="epaper-page">
-    <section class="epaper-hero">
-        <div class="epaper-wrap">
-            <h1>Vidyarthi Mitra Epaper</h1>
-            <p>Education news, admission updates, entrance alerts, career guidance highlights aur weekly student-focused editions ek jagah.</p>
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-eyebrow"><i class="fa fa-newspaper"></i> Digital Edition</div>
+    <h1>Vidyarthi Mitra<br><span>E‑Paper</span></h1>
+    <p class="hero-sub">Your weekly educational digest — exam updates, career news, and student stories. Available in English &amp; Marathi.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="totalCount">–</div>
+        <div class="stat-lbl">Editions</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2</div>
+        <div class="stat-lbl">Languages</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">52</div>
+        <div class="stat-lbl">Issues / Year</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTROLS BAR ── -->
+  <div class="controls-bar">
+    <div class="controls-inner">
+      <div class="search-box">
+        <i class="fa fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search editions…">
+      </div>
+
+      <div class="filter-group">
+        <button class="pill active" data-filter="all">All</button>
+        <button class="pill" data-filter="marathi">🇮🇳 Marathi</button>
+        <button class="pill" data-filter="english">🇬🇧 English</button>
+        <button class="pill" data-filter="new">✨ Latest</button>
+      </div>
+
+      <select class="sort-select" id="sortSelect">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ── MAIN GRID ── -->
+  <main class="main">
+    <div class="section-label">
+      <h2>All Editions</h2>
+      <div class="line"></div>
+      <div class="count" id="visibleCount">0</div>
+    </div>
+
+    <div class="epaper-grid" id="epaperGrid"></div>
+    <div class="empty-state" id="emptyState">
+      <i class="fa fa-file-alt"></i>
+      <h3>No editions found</h3>
+      <p>Try adjusting your search or filter.</p>
+    </div>
+
+    <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+      <button class="btn-load" id="loadMoreBtn">
+        <i class="fa fa-chevron-down"></i>&ensp;Load More Editions
+      </button>
+    </div>
+  </main>
+
+  <!-- ── MODAL VIEWER ── -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <button class="modal-close" id="modalClose"><i class="fa fa-times"></i></button>
+        <div class="modal-eyebrow">VIDYARTHI MITRA — E-PAPER</div>
+        <div class="modal-title" id="mTitle">–</div>
+        <div class="modal-subtitle" id="mSubtitle">–</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-grid">
+          <div class="info-chip">
+            <div class="lbl">Edition</div>
+            <div class="val" id="mEdition">–</div>
+          </div>
+          <div class="info-chip">
+            <div class="lbl">Date Range</div>
+            <div class="val" id="mDate">–</div>
+          </div>
+          <div class="info-chip">
+            <div class="lbl">Week</div>
+            <div class="val" id="mWeek">–</div>
+          </div>
+          <div class="info-chip">
+            <div class="lbl">Status</div>
+            <div class="val" style="color:#16a34a;">✓ Available</div>
+          </div>
         </div>
-    </section>
-
-    <section class="epaper-main">
-        <div class="epaper-wrap">
-            <h2 class="section-head">Recent Epaper Editions</h2>
-            <div class="edition-grid">
-                <article class="edition-card">
-                    <span class="edition-tag">Weekly</span>
-                    <h3>Admission Alert Special Edition</h3>
-                    <p>Current admission rounds, deadlines, and counselling updates in one concise issue.</p>
-                    <a class="epaper-link" href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read Edition</a>
-                </article>
-
-                <article class="edition-card">
-                    <span class="edition-tag">Exam Focus</span>
-                    <h3>Entrance Exam Planner Edition</h3>
-                    <p>JEE, NEET, CUET aur state CET preparation timeline with key planning checkpoints.</p>
-                    <a class="epaper-link" href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read Edition</a>
-                </article>
-
-                <article class="edition-card">
-                    <span class="edition-tag">Careers</span>
-                    <h3>Career Guidance & Skill Trends</h3>
-                    <p>High-demand courses, emerging skills, and career decision support for students.</p>
-                    <a class="epaper-link" href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">Read Edition</a>
-                </article>
-
-                <article class="edition-card">
-                    <span class="edition-tag">Cut-Offs</span>
-                    <h3>Branch & College Trend Snapshot</h3>
-                    <p>Previous-year cut-off trends and shortlist insights for key colleges and branches.</p>
-                    <a class="epaper-link" href="{{ url_for('cutoffs') }}">Check Cut-Offs</a>
-                </article>
-
-                <article class="edition-card">
-                    <span class="edition-tag">Mock Tests</span>
-                    <h3>Practice & Performance Edition</h3>
-                    <p>Mock test strategy, attempt analysis tips, and score improvement recommendations.</p>
-                    <a class="epaper-link" href="{{ url_for('mock_exams') }}">Go to Mock Exams</a>
-                </article>
-
-                <article class="edition-card">
-                    <span class="edition-tag">Counselling</span>
-                    <h3>Expert Guidance Desk</h3>
-                    <p>Form-filling, option selection, and admission planning support updates for students.</p>
-                    <a class="epaper-link" href="{{ url_for('guide_me') }}">Get Guidance</a>
-                </article>
-            </div>
-
-            <h2 class="section-head">Quick Access</h2>
-            <div class="quick-grid">
-                <a class="quick-item" href="{{ url_for('news') }}">News</a>
-                <a class="quick-item" href="{{ url_for('admissions') }}">Admissions</a>
-                <a class="quick-item" href="{{ url_for('exams') }}">Entrance Exams</a>
-                <a class="quick-item" href="{{ url_for('mock_exams') }}">Mock Exams</a>
-                <a class="quick-item" href="{{ url_for('cutoffs') }}">Cut-Offs</a>
-                <a class="quick-item" href="{{ url_for('universities') }}">Universities</a>
-                <a class="quick-item" href="{{ url_for('colleges') }}">Colleges</a>
-                <a class="quick-item" href="{{ url_for('courses') }}">Courses</a>
-            </div>
-
-            <div class="epaper-note">
-                Official ePaper portal direct access: <a href="https://epaper.vidyarthimitra.org/" target="_blank" rel="noopener">epaper.vidyarthimitra.org</a>
-            </div>
+        <div class="modal-actions">
+          <button class="modal-btn primary" id="mReadBtn"><i class="fa fa-book-open"></i> Read Now</button>
+          <button class="modal-btn secondary" id="mDownBtn"><i class="fa fa-download"></i> Download PDF</button>
         </div>
-    </section>
-</div>
-{% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div class="toast" id="toast">Copied link!</div>
+
+  <script>
+    /* ═══════════════════════════════════════════════
+       DATA
+    ═══════════════════════════════════════════════ */
+    const editions = [
+      { id:1,  start:'01/02/2026', end:'07/02/2026', lang:'Marathi', week:'Week 51',   tags:['JEE','NEET','CET'],      isNew:true,  url:'#', pdf:'#' },
+      { id:2,  start:'01/02/2026', end:'21/12/2026', lang:'English', week:'Week 51',   tags:['Career','Exams'],         isNew:true,  url:'#', pdf:'#' },
+      { id:3,  start:'08/12/2025', end:'14/12/2025', lang:'Marathi', week:'Week 50',   tags:['FYJC','DTE','CET'],       isNew:false, url:'#', pdf:'#' },
+      { id:4,  start:'08/12/2025', end:'14/12/2025', lang:'English', week:'Week 50',   tags:['Scholarship','Colleges'], isNew:false, url:'#', pdf:'#' },
+      { id:5,  start:'01/12/2025', end:'07/12/2025', lang:'Marathi', week:'Week 49',   tags:['Admission','NDA'],        isNew:false, url:'#', pdf:'#' },
+      { id:6,  start:'01/12/2025', end:'07/12/2025', lang:'English', week:'Week 49',   tags:['IIT','Study Abroad'],     isNew:false, url:'#', pdf:'#' },
+      { id:7,  start:'24/11/2025', end:'30/11/2025', lang:'Marathi', week:'Week 48',   tags:['MBA','CAT','SNAP'],       isNew:false, url:'#', pdf:'#' },
+      { id:8,  start:'24/11/2025', end:'30/11/2025', lang:'English', week:'Week 48',   tags:['Law','CLAT','AILET'],     isNew:false, url:'#', pdf:'#' },
+      { id:9,  start:'17/11/2025', end:'23/11/2025', lang:'Marathi', week:'Week 47',   tags:['Agriculture','B.Sc'],     isNew:false, url:'#', pdf:'#' },
+      { id:10, start:'17/11/2025', end:'23/11/2025', lang:'English', week:'Week 47',   tags:['NEET PG','Medical'],      isNew:false, url:'#', pdf:'#' },
+      { id:11, start:'10/11/2025', end:'16/11/2025', lang:'Marathi', week:'Week 46',   tags:['Pharmacy','B.Pharm'],     isNew:false, url:'#', pdf:'#' },
+      { id:12, start:'10/11/2025', end:'16/11/2025', lang:'English', week:'Week 46',   tags:['Architecture','NATA'],    isNew:false, url:'#', pdf:'#' },
+    ];
+
+    /* ═══════════════════════════════════════════════
+       STATE
+    ═══════════════════════════════════════════════ */
+    let activeFilter = 'all';
+    let searchQuery  = '';
+    let sortOrder    = 'newest';
+    const PAGE_SIZE  = 8;
+    let visibleCount = PAGE_SIZE;
+
+    /* ═══════════════════════════════════════════════
+       RENDER
+    ═══════════════════════════════════════════════ */
+    function getFiltered() {
+      let arr = editions.filter(e => {
+        const q = searchQuery.toLowerCase();
+        const matchSearch = !q ||
+          e.lang.toLowerCase().includes(q) ||
+          e.week.toLowerCase().includes(q) ||
+          e.start.includes(q) ||
+          e.tags.some(t => t.toLowerCase().includes(q));
+
+        const matchFilter =
+          activeFilter === 'all'     ? true :
+          activeFilter === 'marathi' ? e.lang === 'Marathi' :
+          activeFilter === 'english' ? e.lang === 'English' :
+          activeFilter === 'new'     ? e.isNew : true;
+
+        return matchSearch && matchFilter;
+      });
+
+      arr.sort((a,b) => sortOrder === 'newest' ? b.id - a.id : a.id - b.id);
+      return arr;
+    }
+
+    function renderGrid() {
+      const grid    = document.getElementById('epaperGrid');
+      const empty   = document.getElementById('emptyState');
+      const loadBtn = document.getElementById('loadMoreWrap');
+      const filtered = getFiltered();
+
+      document.getElementById('totalCount').textContent   = editions.length;
+      document.getElementById('visibleCount').textContent = filtered.length;
+
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        empty.classList.add('visible');
+        loadBtn.style.display = 'none';
+        return;
+      }
+      empty.classList.remove('visible');
+
+      const toShow = filtered.slice(0, visibleCount);
+
+      toShow.forEach((e, i) => {
+        const card = document.createElement('div');
+        card.className = 'epaper-card';
+        card.style.animationDelay = (i * 0.06) + 's';
+
+        const langKey   = e.lang.toLowerCase();
+        const badgeCls  = langKey; // 'marathi' or 'english'
+
+        card.innerHTML = `
+          <div class="card-cover">
+            ${e.isNew ? '<div class="new-badge">New</div>' : ''}
+            <div class="edition-badge ${badgeCls}">${e.lang}</div>
+            <div class="cover-logo">Vidyarthi <span>Mitra</span></div>
+            <div class="cover-date-badge">${e.start} – ${e.end}</div>
+            <div class="cover-lines">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-week">${e.week}</div>
+            <div class="card-title">${e.lang} Edition<br>${e.start} – ${e.end}</div>
+            <div class="card-meta">
+              <span><i class="fa fa-calendar"></i> ${e.start}</span>
+              <span><i class="fa fa-tag"></i> ${e.tags.length} topics</span>
+            </div>
+            <div class="card-tags">
+              ${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-read" onclick="openModal(${e.id})">
+              <i class="fa fa-book-open"></i> Read Edition
+            </button>
+            <button class="btn-download" title="Download PDF" onclick="event.stopPropagation(); showToast('Downloading PDF…')">
+              <i class="fa fa-download"></i>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      loadBtn.style.display = filtered.length > visibleCount ? 'block' : 'none';
+    }
+
+    /* ═══════════════════════════════════════════════
+       MODAL
+    ═══════════════════════════════════════════════ */
+    function openModal(id) {
+      const e = editions.find(x => x.id === id);
+      if (!e) return;
+      document.getElementById('mTitle').textContent    = `${e.lang} Edition`;
+      document.getElementById('mSubtitle').textContent = `${e.week} — ${e.start} to ${e.end}`;
+      document.getElementById('mEdition').textContent  = e.lang;
+      document.getElementById('mDate').textContent     = `${e.start} – ${e.end}`;
+      document.getElementById('mWeek').textContent     = e.week;
+      document.getElementById('mReadBtn').onclick      = () => { showToast('Opening reader…'); };
+      document.getElementById('mDownBtn').onclick      = () => { showToast('Downloading PDF…'); };
+      document.getElementById('modalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', function(ev) {
+      if (ev.target === this) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ═══════════════════════════════════════════════
+       TOAST
+    ═══════════════════════════════════════════════ */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    /* ═══════════════════════════════════════════════
+       CONTROLS
+    ═══════════════════════════════════════════════ */
+    // Pills
+    document.querySelectorAll('.pill').forEach(pill => {
+      pill.addEventListener('click', function() {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+        activeFilter = this.dataset.filter;
+        visibleCount = PAGE_SIZE;
+        renderGrid();
+      });
+    });
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', function() {
+      searchQuery  = this.value;
+      visibleCount = PAGE_SIZE;
+      renderGrid();
+    });
+
+    // Sort
+    document.getElementById('sortSelect').addEventListener('change', function() {
+      sortOrder    = this.value;
+      visibleCount = PAGE_SIZE;
+      renderGrid();
+    });
+
+    // Load more
+    document.getElementById('loadMoreBtn').addEventListener('click', function() {
+      visibleCount += PAGE_SIZE;
+      renderGrid();
+    });
+
+    /* ═══════════════════════════════════════════════
+       INIT
+    ═══════════════════════════════════════════════ */
+    renderGrid();
+  </script>
+</body>
+</html>
